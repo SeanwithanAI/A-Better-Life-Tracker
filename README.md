@@ -6,7 +6,7 @@
 
 **Weekly Schedule & Balance: plan your week in time blocks, tick them off each day, and see whether your hours match your goals**
 
-![Version](https://img.shields.io/badge/version-2026--11--19%20mk3-1F6B62)
+![Version](https://img.shields.io/badge/version-2026--11--19%20mk4-1F6B62)
 ![Single file](https://img.shields.io/badge/single%20file-HTML-E0823A)
 ![No account needed](https://img.shields.io/badge/no%20sign--up-required-334155)
 ![PageVault ready](https://img.shields.io/badge/PageVault-ready-2563eb)
@@ -36,7 +36,7 @@ A Better Life Tracker is a weekly planner for everything you're trying to fit in
 - **Workouts.** Lifting blocks alternate **Workout A** and **Workout B**, and each week picks up where the last one left off. Each workout has its own exercises, sets, reps, rest and a place to note the weight you use. Edit the exercises, run notes and tips to fit your own gym.
 - **Chores.** Add chores yourself with **+ Add chore** (in Settings or on the Week tab): a name, date, optional time and length, and how often it repeats: daily, every few weeks on chosen days, monthly on a date or on a weekday like the 3rd Tuesday or the last Friday, or yearly, with an optional end date. Tap any chore to change or delete it.
 - **Chores from your calendar.** Import an `.ics` file from Apple Calendar, Google Calendar, Fastmail, Thunderbird or any other calendar app. Repeating chores show up on the right days, whether they repeat every 2 weeks, every 12 weeks, on the 3rd Tuesday or once every few years. Moved and skipped dates are respected, and chores that have already ended are left out. Import the same calendar again to update it.
-- **Send your week to a calendar.** Download your week as an `.ics` file with every block repeating weekly, to add to any calendar app (optionally leaving out work, meals and routine).
+- **Send your week to a calendar, in sections.** Pick which categories to export, plus your chores list, and download them as one `.ics` file or as a zip with a separate file for each section, so each can be its own calendar you turn on or off. Tap ↓ to download a single section. Blocks repeat weekly, Workout A and B alternate correctly, and chores keep their own repeats.
 - **A sample week to start from**, built around a Monday–Friday job, or an empty week to fill in yourself.
 - **12- or 24-hour clock**, and Day, Dark and Auto themes.
 - **Backups.** One-tap backup and restore, a reminder every 7 days when your data is only on one device, and **Download app + data (.zip)** to keep this version of the app with your data.
@@ -94,7 +94,7 @@ Moving between the two: back up on one side and **Restore from backup** on the o
 
 ## Versioning
 
-Only the newest release is kept in the repo: `A-Better-Life-Tracker-2026-11-19-mk3.html`. Each new release replaces it, and `docs/index.html` (what the web link opens) is updated to match. Your data isn't stored in the file, so moving to a new release keeps it.
+Only the newest release is kept in the repo: `A-Better-Life-Tracker-2026-11-19-mk4.html`. Each new release replaces it, and `docs/index.html` (what the web link opens) is updated to match. Your data isn't stored in the file, so moving to a new release keeps it.
 
 Releases are named with their date. The first release of a day is just the date; later releases that same day add `mk1`, `mk2`, `mk3`… (the count starts over each day). The version is also shown inside the app.
 
@@ -104,6 +104,7 @@ Every release so far, newest first. Older releases are listed for reference; onl
 
 | Version | Notes |
 |---|---|
+| **2026-11-19 mk4** | **Calendar export in sections.** Settings → Add your week to a calendar now lists each category and your chores list. Download the ones you pick as one `.ics` file, as a zip with one file per section, or a single section with ↓. Each file is its own named calendar. Lifts that switch between Workout A and B from week to week export as two alternating events, and chores keep their repeats, skipped dates and end dates. |
 | **2026-11-19 mk3** | **Fit my week to my goals.** Changing a goal in Settings (or tapping **Fit my week** on the Balance tab) shows how your blocks would change to meet every goal, and applies it when you tap **Apply**; **Undo last fit** puts it back. New **must-do** setting for categories (🔒 on for Work, Meals, Routine and Chores) and a **lock** for single blocks: these, and workouts, are never changed. Blocks named breakfast, lunch, dinner, groceries, meal prep or shower are locked automatically. Changes under 30 minutes are left alone, and blocks are never cut into slivers. |
 | **2026-11-19 mk2** | Fixes restoring a backup over existing data on phones, which could freeze or crash the browser on iPhone. Every question and notice (restore, delete, replace, erase) now opens in the app's own panel instead of the browser's pop-up, and a backup that can't be read leaves your current data untouched. |
 | **2026-11-19 mk1** | **Add chores yourself**, without a calendar file: **+ Add chore** in Settings and on the Week tab. Set a date, optional time and length, and a repeat (daily; every few weeks on chosen days; monthly on a date, the 3rd Tuesday or the last Friday; yearly) with an optional end date. Tap any chore in Settings to change or delete it, including imported ones. |

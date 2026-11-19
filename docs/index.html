@@ -222,7 +222,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 mk3 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 mk4 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -234,7 +234,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-19 mk3</span></div>
+      <span class="ver" id="appVer">2026-11-19 mk4</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -333,7 +333,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19 mk3', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19 mk4', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -1050,8 +1050,10 @@ function renderSettings(){
       <div class="row"><button class="btn pri" id="choreAdd">+ Add chore</button><button class="btn" id="icsPick">Import .ics file</button><input type="file" id="icsFile" accept=".ics,text/calendar" hidden>${S.chores.length ? '<button class="btn danger" id="icsClear">Remove all chores</button>' : ''}</div>
       ${icsMsg ? `<p class="saved" style="margin-top:8px">${esc(icsMsg)}</p>` : ''}
       ${S.chores.length ? `<div style="margin-top:10px">${S.chores.map(c => ({c, n:nextDue(c)})).sort((a, b) => (a.n ? a.n - 0 : 9e15) - (b.n ? b.n - 0 : 9e15) || a.c.title.localeCompare(b.c.title)).map(({c, n}) => `<div class="chore"><button type="button" class="ct choreedit" data-editch="${c.id}">${esc(c.title)}<small>${n ? 'Next ' + esc(longD(n)) + ' · ' : 'Ended · '}${esc(ruleText(c))}${c.time ? ' · ' + fmtT(toMin(c.time)) : ''}${c.mins ? ' · ' + fmtDur(c.mins) : ''}</small></button><button class="iconbtn" data-delch="${c.id}" aria-label="Remove ${esc(c.title)}">✕</button></div>`).join('')}</div>` : ''}</div>
-    <div class="card"><h2>Add your week to a calendar</h2><p class="hint">Download your week as a calendar file (.ics) with each block repeating weekly, to import into Apple Calendar, Google Calendar or any other calendar app. Changes here don’t update it, so download it again after big changes.</p>
-      <div class="row"><button class="btn" id="icsOut">Download calendar file</button><label class="row small muted" style="gap:6px"><input type="checkbox" id="icsSkip" checked style="width:18px;height:18px;accent-color:var(--accent)">Leave out Work, Meals and Routine</label></div></div>
+    <div class="card"><h2>Add your week to a calendar</h2><p class="hint">Download calendar files (.ics) to import into Apple Calendar, Google Calendar or any other calendar app. Each block repeats weekly, and chores keep their own repeats. Pick the sections you want: download them together as one file, or as a zip with a separate file for each section, so each one can be its own calendar that you turn on or off. Tap ↓ to download a single section. Changes here don’t update your calendar, so download again after big changes.</p>
+      <div id="expList">${exportSections().map(x => `<div class="chore" style="padding:6px 10px"><label class="ct row" style="gap:8px;cursor:pointer;flex-wrap:nowrap"><input type="checkbox" data-exp="${esc(x.id)}" ${x.on ? 'checked' : ''} style="width:20px;height:20px;accent-color:var(--accent);flex:none">${x.id === '@chores' ? `<span class="cchip" style="--c:${esc(catById('chores').color)}">Chores list</span>` : chip(x.id)}<small style="display:inline;margin-left:auto;white-space:nowrap">${x.n} ${x.id === '@chores' ? (x.n === 1 ? 'chore' : 'chores') : (x.n === 1 ? 'block' : 'blocks')}</small></label><button class="iconbtn" data-exp1="${esc(x.id)}" aria-label="Download only ${esc(x.name)}">↓</button></div>`).join('') || '<p class="empty">Nothing to export yet.</p>'}</div>
+      <div class="row" style="margin-top:10px"><button class="btn pri" id="icsOne">Download as one file</button><button class="btn" id="icsZip">Download separate files (.zip)</button></div>
+      <p class="err" id="expErr"></p></div>
     <div class="card"><h2>Your data</h2>
       <p class="hint">${PV ? 'Saved on your PageVault server, separately for each person. A download here is an extra copy.' : 'Saved only in this browser. Download a backup now and then, or keep the app and your data together with the zip.'}</p>
       <div class="row"><button class="btn" id="bkDown">Download backup</button><button class="btn" id="bkRestore">Restore from backup</button><input type="file" id="bkFile" accept=".json,application/json" hidden></div>
@@ -1080,7 +1082,10 @@ function renderSettings(){
   el.querySelectorAll('[data-delch]').forEach(b => b.onclick = async () => { const c = S.chores.find(x => x.id === b.dataset.delch); if(c && !await ask('Remove “' + c.title + '”?', 'Remove', true)) return; S.chores = S.chores.filter(x => x.id !== b.dataset.delch); save(); renderSettings(); });
   el.querySelectorAll('[data-editch]').forEach(b => b.onclick = () => editChore(S.chores.find(c => c.id === b.dataset.editch)));
   $('choreAdd').onclick = () => editChore(null);
-  $('icsOut').onclick = () => exportICS($('icsSkip').checked);
+  const picked = () => [...el.querySelectorAll('[data-exp]')].filter(i => i.checked).map(i => i.dataset.exp);
+  $('icsOne').onclick = () => { const p = picked(); if(!p.length) return void ($('expErr').textContent = 'Tick at least one section.'); $('expErr').textContent = ''; exportICS(p, 'one'); };
+  $('icsZip').onclick = () => { const p = picked(); if(!p.length) return void ($('expErr').textContent = 'Tick at least one section.'); $('expErr').textContent = ''; exportICS(p, 'zip'); };
+  el.querySelectorAll('[data-exp1]').forEach(b => b.onclick = () => exportICS([b.dataset.exp1], 'one'));
   $('bkDown').onclick = downloadBackup;
   $('bkRestore').onclick = pickRestore;
   $('bkFile').onchange = e => { restoreFile(e.target.files[0]); e.target.value = ''; };
@@ -1175,21 +1180,70 @@ function importICS(f){
   };
   r.readAsText(f);
 }
-function exportICS(skip){
+// the sections of the calendar export: each category that has blocks, and the chores list
+function exportSections(){
+  const out = S.cats.filter(c => S.blocks.some(b => b.cat === c.id)).map(c => ({id:c.id, name:c.name, n:S.blocks.filter(b => b.cat === c.id).length, on:!c.must}));
+  const ch = S.chores.filter(c => nextDue(c)).length;
+  if(ch) out.push({id:'@chores', name:'Chores list', n:ch, on:false});
+  return out;
+}
+function exportICS(ids, mode){
   const mon = mondayOf(today()), stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
   const fold = l => { const out = []; while(l.length > 74){ out.push(l.slice(0, 74)); l = ' ' + l.slice(74); } out.push(l); return out.join('\r\n'); };
   const t = s => String(s).replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/([,;])/g, '\\$1');
   const dt = (d, m) => ymd(d).replace(/-/g, '') + 'T' + hhmm(m).replace(':', '') + '00';
-  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SeanwithanAI//A Better Life Tracker//EN', 'CALSCALE:GREGORIAN', 'X-WR-CALNAME:My week'];
-  S.blocks.filter(b => !skip || !['work', 'meals', 'routine'].includes(b.cat)).forEach(b => {
-    const d = addDays(mon, b.day), s = toMin(b.start), e = s + dur(b);
-    lines.push('BEGIN:VEVENT', 'UID:' + b.id + '@a-better-life-tracker', 'DTSTAMP:' + stamp, 'DTSTART:' + dt(d, s), 'DTEND:' + dt(addDays(d, e >= 1440 ? 1 : 0), e % 1440),
-      'RRULE:FREQ=WEEKLY', 'SUMMARY:' + t(b.kind === 'lift' ? (b.title || 'Lift') : b.title), 'CATEGORIES:' + t(catById(b.cat).name));
-    if(b.note) lines.push('DESCRIPTION:' + t(b.note));
-    lines.push('END:VEVENT');
-  });
-  lines.push('END:VCALENDAR');
-  saveBlob(new Blob([lines.map(fold).join('\r\n') + '\r\n'], {type:'text/calendar'}), FILE_BASE + '-week-' + todayStr() + '.ics');
+  const dd = k => k.replace(/-/g, '');
+  const sectionName = id => id === '@chores' ? 'Chores list' : catById(id).name;
+  function events(id){
+    const L = [];
+    if(id === '@chores'){
+      S.chores.filter(c => nextDue(c)).forEach(c => {
+        L.push('BEGIN:VEVENT', 'UID:' + c.id + '-chore@a-better-life-tracker', 'DTSTAMP:' + stamp);
+        if(c.time){ const s0 = toMin(c.time), e0 = s0 + (c.mins || 30), d = parseYmd(c.date);
+          L.push('DTSTART:' + dt(d, s0), 'DTEND:' + dt(addDays(d, Math.floor(e0 / 1440)), e0 % 1440)); }
+        else L.push('DTSTART;VALUE=DATE:' + dd(c.date), 'DTEND;VALUE=DATE:' + dd(ymd(addDays(parseYmd(c.date), 1))));
+        const r = c.rule;
+        if(r){
+          const p = ['FREQ=' + r.freq]; if(r.interval > 1) p.push('INTERVAL=' + r.interval);
+          if(r.byday && r.byday.length) p.push('BYDAY=' + r.byday.map(x => (x.n || '') + ICS_DAYS[x.d]).join(','));
+          if(r.bymonthday) p.push('BYMONTHDAY=' + r.bymonthday.join(','));
+          if(r.bymonth) p.push('BYMONTH=' + r.bymonth.join(','));
+          if(r.count) p.push('COUNT=' + r.count);
+          if(r.until) p.push('UNTIL=' + dd(r.until) + (c.time ? 'T235959' : ''));
+          L.push('RRULE:' + p.join(';'));
+          if(c.ex && c.ex.length) L.push(c.time ? 'EXDATE:' + c.ex.map(k => dt(parseYmd(k), toMin(c.time))).join(',') : 'EXDATE;VALUE=DATE:' + c.ex.map(dd).join(','));
+        }
+        L.push('SUMMARY:' + t(c.title), 'CATEGORIES:Chores');
+        if(c.note) L.push('DESCRIPTION:' + t(c.note));
+        L.push('END:VEVENT');
+      });
+      return L;
+    }
+    S.blocks.filter(b => b.cat === id).forEach(b => {
+      const d0 = addDays(mon, b.day), s = toMin(b.start), e = s + dur(b);
+      // a lift that changes between Workout A and B from week to week becomes two events, each every 2 weeks
+      const l0 = b.kind === 'lift' ? liftLetter(b, d0) : '', l1 = b.kind === 'lift' ? liftLetter(b, addDays(d0, 7)) : '';
+      const runs = b.kind === 'lift' && l0 !== l1 ? [[d0, l0, 2], [addDays(d0, 7), l1, 2]] : [[d0, l0, 1]];
+      runs.forEach(([d, letter, every], i) => {
+        L.push('BEGIN:VEVENT', 'UID:' + b.id + (i ? '-b' : '') + '@a-better-life-tracker', 'DTSTAMP:' + stamp, 'DTSTART:' + dt(d, s), 'DTEND:' + dt(addDays(d, e >= 1440 ? 1 : 0), e % 1440),
+          'RRULE:FREQ=WEEKLY' + (every > 1 ? ';INTERVAL=' + every : ''), 'SUMMARY:' + t(b.kind === 'lift' ? (b.title || 'Lift') + ': Workout ' + letter : b.title), 'CATEGORIES:' + t(catById(b.cat).name));
+        if(b.note) L.push('DESCRIPTION:' + t(b.note));
+        L.push('END:VEVENT');
+      });
+    });
+    return L;
+  }
+  const cal = (name, list) => ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//SeanwithanAI//A Better Life Tracker//EN', 'CALSCALE:GREGORIAN', 'X-WR-CALNAME:' + t(name)]
+    .concat(list, ['END:VCALENDAR']).map(fold).join('\r\n') + '\r\n';
+  const safe = n => n.replace(/[^\w\-]+/g, '-').replace(/^-+|-+$/g, '') || 'Section';
+  if(mode === 'zip' && ids.length > 1){
+    saveBlob(makeZip(ids.map(id => ({name:FILE_BASE + '-' + safe(sectionName(id)) + '-' + todayStr() + '.ics', data:cal('Life Tracker · ' + sectionName(id), events(id))}))), FILE_BASE + '-calendars-' + todayStr() + '.zip');
+    toast(ids.length + ' calendar files downloaded in a zip');
+    return;
+  }
+  const one = ids.length === 1;
+  saveBlob(new Blob([cal(one ? 'Life Tracker · ' + sectionName(ids[0]) : 'Life Tracker · My week', ids.flatMap(events))], {type:'text/calendar'}),
+    FILE_BASE + '-' + (one ? safe(sectionName(ids[0])) : 'week') + '-' + todayStr() + '.ics');
   toast('Calendar file downloaded');
 }
 function pickRestore(){
