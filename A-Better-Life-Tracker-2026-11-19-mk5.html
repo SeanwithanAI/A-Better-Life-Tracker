@@ -222,7 +222,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 mk4 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 mk5 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -234,7 +234,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-19 mk4</span></div>
+      <span class="ver" id="appVer">2026-11-19 mk5</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -333,7 +333,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19 mk4', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19 mk5', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -458,13 +458,25 @@ const catById = id => S.cats.find(c => c.id === id) || {id, name:id, color:'#888
 const chip = id => { const c = catById(id); return `<span class="cchip" style="--c:${esc(c.color)}">${esc(c.name)}</span>`; };
 const dayBlocks = d => S.blocks.filter(b => b.day === d).sort((a, b) => toMin(a.start) - toMin(b.start) || toMin(a.end) - toMin(b.end));
 
-/* ---- lifting rotation: the lift blocks of a week alternate A and B, and each week starts where the last left off ---- */
+/* ---- blocks that repeat every other week: "every" is 2 and "anchor" is a Monday of a week the block happens ---- */
+const wkIndex = (a, d) => Math.round(daysBetween(mondayOf(a), mondayOf(d)) / 7);
+const blockOn = (b, d) => !(b.every > 1) || ((wkIndex(parseYmd(b.anchor || ymd(mondayOf(today()))), d) % b.every) + b.every) % b.every === 0;
+const blocksOn = d => dayBlocks(dow(d)).filter(b => blockOn(b, d));
+const perWeek = b => dur(b) / (b.every > 1 ? b.every : 1);   // average minutes a week
+
+/* ---- lifting rotation: lifts alternate Workout A and B in the order they happen, week after week,
+   even when some weeks have fewer lifts (an every-other-week lift) ---- */
 function liftLetter(b, date){
   const lifts = S.blocks.filter(x => x.kind === 'lift').sort((a, c) => a.day - c.day || toMin(a.start) - toMin(c.start));
-  const i = lifts.findIndex(x => x.id === b.id);
+  const anchor = mondayOf(parseYmd(S.liftAnchor || ymd(mondayOf(today()))));
+  const inWeek = mon => lifts.filter(x => blockOn(x, addDays(mon, x.day)));
+  const wk = wkIndex(anchor, date);
+  let n = 0;
+  if(wk >= 0) for(let w = 0; w < wk; w++) n += inWeek(addDays(anchor, 7 * w)).length;
+  else for(let w = wk; w < 0; w++) n -= inWeek(addDays(anchor, 7 * w)).length;
+  const i = inWeek(mondayOf(date)).findIndex(x => x.id === b.id);
   if(i < 0) return '';
-  const wk = Math.floor(daysBetween(parseYmd(S.liftAnchor || ymd(mondayOf(today()))), mondayOf(date)) / 7);
-  return ((i + wk * lifts.length) % 2 + 2) % 2 === 0 ? 'A' : 'B';
+  return ((n + i + (S.liftFlip ? 1 : 0)) % 2 + 2) % 2 === 0 ? 'A' : 'B';
 }
 const blockTitle = (b, date) => b.kind === 'lift' ? esc(b.title || 'Lift') + ': Workout ' + liftLetter(b, date || today()) : esc(b.title);
 const isDone = (date, id) => !!(S.done[ymd(date)] || {})[id];
@@ -520,7 +532,7 @@ document.querySelectorAll('#theme button').forEach(b => b.onclick = () => { try{
 
 /* ---- tabs ---- */
 const VIEWS = ['today', 'week', 'month', 'balance', 'workouts', 'settings'];
-let view = 'today', weekDay = dow(today());
+let view = 'today', weekDay = dow(today()), weekOff = 0;
 function go(v){
   if(!VIEWS.includes(v)) v = 'today';
   if(!S.setup && v !== 'settings') v = 'today';
@@ -670,7 +682,7 @@ function blockRow(b, d, opts){
   const c = catById(b.cat);
   if(opts && opts.edit) return `<div class="blk edit${opts.clash ? ' clash' : ''}" style="--c:${esc(c.color)}" data-edit="${b.id}" role="button" tabindex="0">
     <div class="tm">${fmtT(s)}<span>${fmtT(e)}</span></div>
-    <div><div class="tt">${blockTitle(b, d)}</div><div class="meta">${chip(b.cat)}<span class="note">${fmtDur(dur(b))}${b.locked || catById(b.cat).must ? ' · 🔒' : ''}</span>${opts.clash ? '<span class="pill warn">Overlaps</span>' : ''}</div>${b.note ? `<div class="bn">${esc(b.note)}</div>` : ''}</div>
+    <div><div class="tt">${blockTitle(b, d)}</div><div class="meta">${chip(b.cat)}<span class="note">${fmtDur(dur(b))}${b.locked || catById(b.cat).must ? ' · 🔒' : ''}</span>${b.every > 1 ? '<span class="pill warn">Every other week</span>' : ''}${opts.clash ? '<span class="pill warn">Overlaps</span>' : ''}</div>${b.note ? `<div class="bn">${esc(b.note)}</div>` : ''}</div>
     <span class="iconbtn" aria-hidden="true">✎</span></div>`;
   return `<div class="blk${done ? ' done' : ''}${now ? ' now' : ''}${past ? ' past' : ''}" style="--c:${esc(c.color)}">
     <input type="checkbox" data-done="${b.id}" ${done ? 'checked' : ''} aria-label="Done: ${esc(b.title)}">
@@ -680,14 +692,14 @@ function blockRow(b, d, opts){
 function weekStats(){
   const mon = mondayOf(today()); let fit = 0, fitDone = 0, all = 0, allDone = 0;
   for(let i = 0; i < 7; i++){ const d = addDays(mon, i);
-    dayBlocks(i).forEach(b => { if(b.cat === 'work' || b.cat === 'routine' || b.cat === 'meals') return; all++; if(isDone(d, b.id)) allDone++;
+    blocksOn(d).forEach(b => { if(b.cat === 'work' || b.cat === 'routine' || b.cat === 'meals') return; all++; if(isDone(d, b.id)) allDone++;
       if(b.kind === 'lift' || b.kind === 'run'){ fit++; if(isDone(d, b.id)) fitDone++; } }); }
   return {fit, fitDone, all, allDone};
 }
 function renderToday(){
   const el = $('v-today');
   if(!S.setup){ el.innerHTML = welcome(); wireWelcome(el); return; }
-  const d = today(), bl = dayBlocks(dow(d)), n = nowMin();
+  const d = today(), bl = blocksOn(d), n = nowMin();
   const cur = bl.find(b => n >= toMin(b.start) && n < toMin(b.start) + dur(b)), next = bl.find(b => toMin(b.start) > n);
   let nowHtml;
   if(cur){
@@ -728,20 +740,23 @@ function wireWelcome(el){
 
 /* ================================================================ Week */
 function renderWeek(){
-  const el = $('v-week'), mon = mondayOf(today()), d = addDays(mon, weekDay), bl = dayBlocks(weekDay);
+  const el = $('v-week'), mon = addDays(mondayOf(today()), 7 * weekOff), d = addDays(mon, weekDay), bl = blocksOn(d);
+  const alt = S.blocks.some(b => b.every > 1);
   const td = dow(today());
   let lastEnd = -1;
   const rows = bl.map(b => { const s = toMin(b.start), clash = s < lastEnd; lastEnd = Math.max(lastEnd, s + dur(b)); return blockRow(b, d, {edit:true, clash}); }).join('');
   const hrs = bl.reduce((t, b) => t + dur(b), 0) / 60, ch = choresOn(d);
   el.innerHTML = `
-    <div class="card"><h2>Your week</h2><p class="hint">Pick a day, then tap a block to change it. This is the plan for every week; ticks on the Today tab are kept per date.</p>
-      <div class="days">${DOW3.map((x, i) => `<button type="button" data-day="${i}" aria-pressed="${i === weekDay}" class="${i === td ? 'today' : ''}">${x}<small>${addDays(mon, i).getDate()}</small></button>`).join('')}</div>
-      <div class="row" style="justify-content:space-between;margin-bottom:10px"><b>${DOW[weekDay]} <span class="muted small">· ${fmtH(hrs)} planned</span></b>
+    <div class="card"><h2>Your week</h2><p class="hint">Pick a day, then tap a block to change it. Blocks repeat every week, or every other week; ticks on the Today tab are kept per date.</p>
+      <div class="seg" style="margin-bottom:10px" role="group" aria-label="Which week"><button type="button" data-woff="0" aria-pressed="${weekOff === 0}">This week</button><button type="button" data-woff="1" aria-pressed="${weekOff === 1}">Next week</button></div>${alt ? '<div class="note" style="margin:-4px 0 10px">Some blocks are every other week, so the two weeks differ.</div>' : ''}
+      <div class="days">${DOW3.map((x, i) => `<button type="button" data-day="${i}" aria-pressed="${i === weekDay}" class="${i === td && !weekOff ? 'today' : ''}">${x}<small>${addDays(mon, i).getDate()}</small></button>`).join('')}</div>
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><b>${DOW[weekDay]} ${short(d)} <span class="muted small">· ${fmtH(hrs)} planned</span></b>
         <span class="row"><button class="btn sm pri" id="addBlk">+ Add block</button><button class="btn sm" id="copyDay">Copy day…</button></span></div>
       ${bl.length ? `<div class="plan">${rows}</div>` : '<p class="empty">Nothing planned for this day yet.</p>'}</div>
     <div class="card"><div class="wohead"><h2>Chores on ${DOW[weekDay]}, ${short(d)}</h2><button class="btn sm" id="wkChore">+ Add chore</button></div>
       ${ch.length ? ch.map(c => choreRow(c, d)).join('') : `<p class="empty">${S.chores.length ? 'No chores due that day.' : 'No chores yet. Add one here, or import a calendar file (.ics) in Settings.'}</p>`}</div>`;
   el.querySelectorAll('[data-day]').forEach(b => b.onclick = () => { weekDay = +b.dataset.day; renderWeek(); });
+  el.querySelectorAll('[data-woff]').forEach(b => b.onclick = () => { weekOff = +b.dataset.woff; renderWeek(); });
   el.querySelectorAll('[data-edit]').forEach(r => { r.onclick = () => editBlock(S.blocks.find(b => b.id === r.dataset.edit));
     r.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); r.onclick(); } }; });
   $('addBlk').onclick = () => editBlock(null);
@@ -777,6 +792,7 @@ function editBlock(b){
     <div class="two"><label class="f">Starts<input type="time" id="bStart" value="${esc(x.start)}"></label><label class="f">Ends<input type="time" id="bEnd" value="${esc(x.end)}"></label></div>
     <label class="f">Category<select id="bCat">${S.cats.map(c => `<option value="${c.id}" ${c.id === x.cat ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label>
     <label class="f">Type<select id="bKind"><option value="">Regular block</option><option value="lift" ${x.kind === 'lift' ? 'selected' : ''}>Lifting (alternates Workout A and B)</option><option value="run" ${x.kind === 'run' ? 'selected' : ''}>Run</option></select></label>
+    <label class="f">Repeats<select id="bEvery"><option value="1">Every week</option><option value="2" ${x.every > 1 ? 'selected' : ''}>Every other week${x.every > 1 ? '' : ', starting the week of ' + esc(short(addDays(mondayOf(today()), 7 * weekOff)))}</option></select></label>
     <label class="f">Note<input type="text" id="bNote" value="${esc(x.note)}" placeholder="Optional" maxlength="200"></label>
     <label class="mustlbl" style="font-size:13.5px"><input type="checkbox" id="bLock" ${x.locked ? 'checked' : ''}>🔒 Keep this block as it is when fitting my week to my goals</label>
     <div><div class="f" style="font-size:13px;color:var(--ink-soft);font-weight:600;margin-bottom:4px">${isNew ? 'Days' : 'Also add a copy on'}</div>
@@ -792,7 +808,9 @@ function editBlock(b){
     if(s === e) return void ($('bErr').textContent = 'The end has to be later than the start.');
     const days = [...$('mbox').querySelectorAll('[data-bday]')].filter(i => i.checked && !i.disabled).map(i => +i.dataset.bday);
     if(isNew && !days.length) return void ($('bErr').textContent = 'Pick at least one day.');
-    const v = {start:s, end:e, title:t, cat:$('bCat').value, note:$('bNote').value.trim(), kind:$('bKind').value, locked:$('bLock').checked};
+    const ev = +$('bEvery').value;
+    const v = {start:s, end:e, title:t, cat:$('bCat').value, note:$('bNote').value.trim(), kind:$('bKind').value, locked:$('bLock').checked,
+      every:ev > 1 ? 2 : undefined, anchor:ev > 1 ? (x.every > 1 && x.anchor ? x.anchor : ymd(addDays(mondayOf(today()), 7 * weekOff))) : undefined};
     if(isNew) days.forEach(dd => S.blocks.push({id:uid(), day:dd, ...v}));
     else { Object.assign(b, v); days.forEach(dd => S.blocks.push({id:uid(), day:dd, ...v})); }
     save(); closeModal(); renderWeek(); toast(isNew ? 'Added' : 'Saved');
@@ -825,7 +843,7 @@ function renderMonth(){
   const weeks = Math.ceil((dow(first) + last.getDate()) / 7), tdS = todayStr();
   let cells = '', choreN = 0, fitN = 0;
   for(let i = 0; i < weeks * 7; i++){
-    const d = addDays(start, i), k = ymd(d), inM = d.getMonth() === m, bl = dayBlocks(dow(d)), ch = choresOn(d);
+    const d = addDays(start, i), k = ymd(d), inM = d.getMonth() === m, bl = blocksOn(d), ch = choresOn(d);
     if(inM){ choreN += ch.length; fitN += bl.filter(b => b.kind === 'lift' || b.kind === 'run').length; }
     // the day's planned hours by category, as one thin bar
     const hrs = {}; let tot = 0;
@@ -859,7 +877,7 @@ function renderMonth(){
   el.querySelectorAll('[data-mday]').forEach(b => b.onclick = () => openDay(parseYmd(b.dataset.mday)));
 }
 function openDay(d){
-  const bl = dayBlocks(dow(d)), ch = choresOn(d);
+  const bl = blocksOn(d), ch = choresOn(d);
   openModal(`<h2>${DOW[dow(d)]}, ${esc(longD(d))}</h2>
     ${bl.length ? `<div class="plan">${bl.map(b => blockRow(b, d)).join('')}</div>` : '<p class="empty">Nothing planned this day.</p>'}
     <div><b>Chores</b>${ch.length ? ch.map(c => choreRow(c, d)).join('') : '<p class="empty" style="margin:4px 0 0">No chores due.</p>'}</div>
@@ -875,7 +893,7 @@ function openDay(d){
 function renderBalance(){
   const el = $('v-balance'), mon = mondayOf(today()), td = dow(today());
   const plan = {}, done = {};
-  S.blocks.forEach(b => { plan[b.cat] = (plan[b.cat] || 0) + dur(b) / 60; if(b.day <= td && isDone(addDays(mon, b.day), b.id)) done[b.cat] = (done[b.cat] || 0) + dur(b) / 60; });
+  S.blocks.forEach(b => { plan[b.cat] = (plan[b.cat] || 0) + perWeek(b) / 60; if(b.day <= td && blockOn(b, addDays(mon, b.day)) && isDone(addDays(mon, b.day), b.id)) done[b.cat] = (done[b.cat] || 0) + dur(b) / 60; });
   const choreH = S.chores.reduce((t, c) => { let n = 0; for(let i = 0; i < 7; i++) if(c.mins && choreOn(c, addDays(mon, i))) n += c.mins; return t + n / 60; }, 0);
   if(choreH) plan.chores = (plan.chores || 0) + choreH;
   const goals = S.cats.filter(c => c.target > 0 || plan[c.id]);
@@ -889,9 +907,9 @@ function renderBalance(){
   }).join('');
   const total = Object.values(plan).reduce((a, b) => a + b, 0), sleepH = sleepEstimate();
   el.innerHTML = `
-    <div class="card"><h2>Fit my week to my goals</h2><p class="hint">Moves time between your blocks so every goal gets its hours. Must-do categories (🔒 work, meals, chores…), locked blocks and workouts never change. You see every change before it’s made.</p>
+    <div class="card"><h2>Fit my week to my goals</h2><p class="hint">Moves time between your blocks so every goal gets its hours. Must-do categories (🔒 work, meals, chores…), locked blocks, every-other-week blocks and workouts never change. You see every change before it’s made.</p>
       <div class="row"><button class="btn pri" id="fitBtn">Fit my week</button>${S.prevBlocks ? '<button class="btn" id="fitUndo">Undo last fit</button>' : ''}</div></div>
-    <div class="card"><h2>Hours per week</h2><p class="hint">The pale bar is what your week plans, the solid bar is what you’ve ticked off this week so far, and the line is your goal. Set goals in Settings.</p>
+    <div class="card"><h2>Hours per week</h2><p class="hint">The pale bar is what your week plans (every-other-week blocks count half), the solid bar is what you’ve ticked off this week so far, and the line is your goal. Set goals in Settings.</p>
       ${goalCats.length ? bars(goalCats) : '<p class="empty">No goals yet. Give a category a weekly goal in Settings.</p>'}</div>
     ${other.length ? `<div class="card"><h2>Everything else</h2>${bars(other)}</div>` : ''}
     <div class="card"><h2>The whole week</h2>
@@ -913,8 +931,8 @@ function wireBalance(){
 function planFit(){
   const bl = S.blocks.map(b => ({...b}));
   const cat = id => catById(id);
-  const movable = b => !b.kind && !b.locked && !cat(b.cat).must;
-  const mins = id => bl.filter(b => b.cat === id).reduce((t, b) => t + dur(b), 0);
+  const movable = b => !b.kind && !b.locked && !cat(b.cat).must && !(b.every > 1);
+  const mins = id => bl.filter(b => b.cat === id).reduce((t, b) => t + perWeek(b), 0);
   const goals = S.cats.filter(c => !c.must && c.target > 0), spare = S.cats.filter(c => !c.must && !(c.target > 0));
   const titleFor = id => { const n = {}; S.blocks.filter(b => b.cat === id && !b.kind).forEach(b => n[b.title] = (n[b.title] || 0) + 1);
     const t = Object.keys(n).sort((a, b) => n[b] - n[a])[0]; return t || cat(id).name; };
@@ -959,12 +977,12 @@ function planFit(){
     const day = bl.filter(b => b.day === d).sort((a, b) => toMin(a.start) - toMin(b.start));
     for(let i = 1; i < day.length; i++){
       const a = day[i - 1], b = day[i];
-      if(a.cat === b.cat && a.title === b.title && !a.kind && !b.kind && !a.locked && !b.locked && toMin(a.start) + dur(a) === toMin(b.start)){
+      if(a.cat === b.cat && a.title === b.title && !a.kind && !b.kind && !a.locked && !b.locked && !(a.every > 1) && !(b.every > 1) && toMin(a.start) + dur(a) === toMin(b.start)){
         a.end = b.end; bl.splice(bl.indexOf(b), 1); day.splice(i, 1); i--; }
     }
   }
   const short = goals.filter(r => need[r.id] >= 30).map(r => ({c:r, m:need[r.id]}));
-  const after = {}; S.cats.concat(newFree ? [newFree] : []).forEach(c => after[c.id] = bl.filter(b => b.cat === c.id).reduce((t, b) => t + dur(b), 0));
+  const after = {}; S.cats.concat(newFree ? [newFree] : []).forEach(c => after[c.id] = bl.filter(b => b.cat === c.id).reduce((t, b) => t + perWeek(b), 0));
   return {blocks:bl, moves, short, before, after, newFree};
 }
 function offerFit(changed){
@@ -998,7 +1016,7 @@ function offerFit(changed){
 function sleepEstimate(){
   let t = 0;
   for(let i = 0; i < 7; i++){
-    const a = dayBlocks(i), b = dayBlocks((i + 1) % 7);
+    const m0 = mondayOf(today()), a = blocksOn(addDays(m0, i)), b = blocksOn(addDays(m0, i + 1));
     if(!a.length || !b.length){ t += 8 * 60; continue; }
     const end = Math.max(...a.map(x => toMin(x.start) + dur(x))), start = toMin(b[0].start);
     t += Math.max(0, start + 1440 - end);
@@ -1010,7 +1028,7 @@ function sleepEstimate(){
 let woEdit = false;
 function renderWorkouts(){
   const el = $('v-workouts'), mon = mondayOf(today()), td = dow(today()), W = S.workouts;
-  const fit = S.blocks.filter(b => b.kind === 'lift' || b.kind === 'run').sort((a, b) => a.day - b.day || toMin(a.start) - toMin(b.start));
+  const fit = S.blocks.filter(b => (b.kind === 'lift' || b.kind === 'run') && blockOn(b, addDays(mon, b.day))).sort((a, b) => a.day - b.day || toMin(a.start) - toMin(b.start));
   const sched = fit.map(b => { const d = addDays(mon, b.day), ok = isDone(d, b.id);
     return `<div class="ws${b.day === td ? ' td' : ''}${ok ? ' ok' : ''}"><span class="muted small">${DOW3[b.day]} · ${fmtT(toMin(b.start))}</span><b>${b.kind === 'lift' ? 'Workout ' + liftLetter(b, d) : 'Run'}</b><span class="note">${esc(b.kind === 'lift' ? '' : b.title.replace(/^Treadmill run,?\s*/i, ''))}</span></div>`; }).join('');
   const table = k => `<div class="card"><div class="wohead"><h2>Workout ${k}</h2></div>
@@ -1031,9 +1049,7 @@ function renderWorkouts(){
   el.querySelectorAll('[data-add]').forEach(b => b.onclick = () => { W[b.dataset.add].push(EX('New exercise', '3 × 10', '90 sec', '')); save(); renderWorkouts(); });
   ['woRuns', 'woTips'].forEach(id => { const t = $(id); if(t) t.onchange = () => { W[id === 'woRuns' ? 'runs' : 'tips'] = t.value; save(); }; });
   $('woEdit').onclick = () => { woEdit = !woEdit; renderWorkouts(); };
-  $('swapAB').onclick = () => { S.liftAnchor = ymd(addDays(parseYmd(S.liftAnchor || ymd(mon)), 7 * (S.blocks.filter(b => b.kind === 'lift').length % 2 ? 1 : 0) || 0));
-    if(S.blocks.filter(b => b.kind === 'lift').length % 2 === 0){ const k = W.A; W.A = W.B; W.B = k; }
-    save(); renderWorkouts(); toast('Swapped'); };
+  $('swapAB').onclick = () => { S.liftFlip = !S.liftFlip; save(); renderWorkouts(); toast('Swapped'); };
 }
 
 /* ================================================================ Settings */
@@ -1220,10 +1236,13 @@ function exportICS(ids, mode){
       return L;
     }
     S.blocks.filter(b => b.cat === id).forEach(b => {
-      const d0 = addDays(mon, b.day), s = toMin(b.start), e = s + dur(b);
-      // a lift that changes between Workout A and B from week to week becomes two events, each every 2 weeks
-      const l0 = b.kind === 'lift' ? liftLetter(b, d0) : '', l1 = b.kind === 'lift' ? liftLetter(b, addDays(d0, 7)) : '';
-      const runs = b.kind === 'lift' && l0 !== l1 ? [[d0, l0, 2], [addDays(d0, 7), l1, 2]] : [[d0, l0, 1]];
+      const s = toMin(b.start), e = s + dur(b), every = b.every > 1 ? b.every : 1;
+      // look 4 weeks ahead: one event if it repeats plainly, or one every 4 weeks for each date
+      // when a lift switches between Workout A and B or an every-other-week block is involved
+      const occ = [0, 1, 2, 3].filter(w => blockOn(b, addDays(mon, 7 * w + b.day)));
+      if(!occ.length) return;
+      const letters = occ.map(w => b.kind === 'lift' ? liftLetter(b, addDays(mon, 7 * w + b.day)) : '');
+      const runs = letters.every(x => x === letters[0]) ? [[addDays(mon, 7 * occ[0] + b.day), letters[0], every]] : occ.map((w, i) => [addDays(mon, 7 * w + b.day), letters[i], 4]);
       runs.forEach(([d, letter, every], i) => {
         L.push('BEGIN:VEVENT', 'UID:' + b.id + (i ? '-b' : '') + '@a-better-life-tracker', 'DTSTAMP:' + stamp, 'DTSTART:' + dt(d, s), 'DTEND:' + dt(addDays(d, e >= 1440 ? 1 : 0), e % 1440),
           'RRULE:FREQ=WEEKLY' + (every > 1 ? ';INTERVAL=' + every : ''), 'SUMMARY:' + t(b.kind === 'lift' ? (b.title || 'Lift') + ': Workout ' + letter : b.title), 'CATEGORIES:' + t(catById(b.cat).name));
