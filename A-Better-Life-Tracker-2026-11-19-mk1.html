@@ -29,6 +29,7 @@
     --shadow-sm:none; --shadow:none; color-scheme:dark;
   }
   *{box-sizing:border-box}
+  [hidden]{display:none!important}
   html,body{margin:0;background:var(--canvas);color:var(--ink);font:15px/1.5 var(--font);-webkit-text-size-adjust:100%}
   #nojs{display:none}
   html:not(.js) #nojs{display:block}
@@ -119,7 +120,7 @@
   .days button[aria-pressed="true"] small{color:var(--on-accent);opacity:.8}
   .days button.today{box-shadow:inset 0 0 0 2px var(--shu)}
   label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft);font-weight:600}
-  input[type=text],input[type=number],input[type=time],input[type=search],select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;width:100%;min-width:0}
+  input[type=text],input[type=number],input[type=time],input[type=date],input[type=search],select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:9px;padding:8px 10px;width:100%;min-width:0}
   textarea{resize:vertical;line-height:1.45}
   input[type=color]{width:42px;height:38px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);padding:3px;flex:none}
   .btn{font:inherit;font-weight:700;font-size:14px;padding:9px 15px;border-radius:9px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center}
@@ -140,6 +141,8 @@
   .chore input{width:22px;height:22px;accent-color:var(--accent);flex:none;margin:0}
   .chore .ct{flex:1;min-width:0;font-weight:600}
   .chore .ct small{display:block;font-weight:500;color:var(--ink-soft);font-size:12.5px}
+  .choreedit{font:inherit;text-align:left;border:0;background:none;color:var(--ink);padding:0;cursor:pointer}
+  .choreedit:hover{color:var(--accent)}
   .chore.done .ct{text-decoration:line-through;color:var(--ink-soft)}
   table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
   th,td{text-align:left;padding:8px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
@@ -216,7 +219,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 mk1 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -228,7 +231,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-19</span></div>
+      <span class="ver" id="appVer">2026-11-19 mk1</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -326,7 +329,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19 mk1', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -696,7 +699,7 @@ function renderToday(){
       <div class="tile"><span class="big">${ws.fitDone}/${ws.fit}</span><span class="lbl">workouts this week</span></div>
       <div class="tile"><span class="big">${ws.allDone}/${ws.all}</span><span class="lbl">activities done this week</span></div></div></div>
     <div class="card"><h2>Chores today</h2>
-      ${ch.length ? ch.map(c => choreRow(c, d)).join('') : S.chores.length ? '<p class="empty">No chores due today.</p>' : '<p class="hint">Bring in your chores from a calendar file (.ics) in <button class="linkish" id="toSet">Settings</button>, and the ones due each day show up here.</p>'}</div>`;
+      ${ch.length ? ch.map(c => choreRow(c, d)).join('') : S.chores.length ? '<p class="empty">No chores due today.</p>' : '<p class="hint">Add your chores in <button class="linkish" id="toSet">Settings</button> (type them in or import a calendar file), and the ones due each day show up here.</p>'}</div>`;
   el.querySelectorAll('[data-done]').forEach(i => i.onchange = () => { setDone(d, i.dataset.done, i.checked); renderToday(); });
   wireChores(el, d);
   const ts = $('toSet'); if(ts) ts.onclick = () => go('settings');
@@ -727,13 +730,14 @@ function renderWeek(){
       <div class="row" style="justify-content:space-between;margin-bottom:10px"><b>${DOW[weekDay]} <span class="muted small">· ${fmtH(hrs)} planned</span></b>
         <span class="row"><button class="btn sm pri" id="addBlk">+ Add block</button><button class="btn sm" id="copyDay">Copy day…</button></span></div>
       ${bl.length ? `<div class="plan">${rows}</div>` : '<p class="empty">Nothing planned for this day yet.</p>'}</div>
-    <div class="card"><h2>Chores on ${DOW[weekDay]}, ${short(d)}</h2>
-      ${ch.length ? ch.map(c => choreRow(c, d)).join('') : `<p class="empty">${S.chores.length ? 'No chores due that day.' : 'No chores imported yet. Add your chores calendar (.ics) in Settings.'}</p>`}</div>`;
+    <div class="card"><div class="wohead"><h2>Chores on ${DOW[weekDay]}, ${short(d)}</h2><button class="btn sm" id="wkChore">+ Add chore</button></div>
+      ${ch.length ? ch.map(c => choreRow(c, d)).join('') : `<p class="empty">${S.chores.length ? 'No chores due that day.' : 'No chores yet. Add one here, or import a calendar file (.ics) in Settings.'}</p>`}</div>`;
   el.querySelectorAll('[data-day]').forEach(b => b.onclick = () => { weekDay = +b.dataset.day; renderWeek(); });
   el.querySelectorAll('[data-edit]').forEach(r => { r.onclick = () => editBlock(S.blocks.find(b => b.id === r.dataset.edit));
     r.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); r.onclick(); } }; });
   $('addBlk').onclick = () => editBlock(null);
   $('copyDay').onclick = copyDay;
+  $('wkChore').onclick = () => editChore(null, d);
   wireChores(el, d);
 }
 function openModal(html){ $('mbox').innerHTML = html; $('modal').hidden = false; document.body.style.overflow = 'hidden'; const f = $('mbox').querySelector('input,select'); if(f && matchMedia('(min-width:641px)').matches) f.focus(); }
@@ -919,10 +923,10 @@ function renderSettings(){
     <div class="card"><h2>Categories and weekly goals</h2><p class="hint">Each block belongs to a category. Give a category a goal in hours a week to see it on the Balance tab (0 = no goal).</p>
       <div id="catList">${S.cats.map(c => `<div class="catrow" data-cat="${c.id}"><input type="color" value="${esc(c.color)}" data-f="color" aria-label="Color"><input type="text" value="${esc(c.name)}" data-f="name" aria-label="Name" maxlength="40"><input type="number" value="${c.target || 0}" min="0" max="168" step="0.5" data-f="target" aria-label="Goal, hours a week"><button class="iconbtn" data-delcat="${c.id}" aria-label="Delete ${esc(c.name)}">✕</button></div>`).join('')}</div>
       <div class="row" style="margin-top:8px"><button class="btn sm" id="addCat">+ Add category</button><span class="note">Columns: color · name · goal (hours a week)</span></div></div>
-    <div class="card"><h2>Chores calendar</h2><p class="hint">Import your chores from a calendar file (.ics), such as an export from Apple Calendar, Google Calendar or Thunderbird. Repeating chores (every week, every 2 weeks, the 1st of the month…) show up on the right days on the Today and Week tabs. Importing the same calendar again updates it.</p>
-      <div class="row"><button class="btn pri" id="icsPick">Import .ics file</button><input type="file" id="icsFile" accept=".ics,text/calendar" hidden>${S.chores.length ? '<button class="btn danger" id="icsClear">Remove all chores</button>' : ''}</div>
+    <div class="card"><h2>Chores</h2><p class="hint">Add chores yourself, or import them from a calendar file (.ics), such as an export from Apple Calendar, Google Calendar or Thunderbird. Repeating chores (every week, every 2 weeks, the 3rd Tuesday…) show up on the right days on the Today, Week and Month tabs. Tap a chore to change it. Importing the same calendar again updates the chores that came from it.</p>
+      <div class="row"><button class="btn pri" id="choreAdd">+ Add chore</button><button class="btn" id="icsPick">Import .ics file</button><input type="file" id="icsFile" accept=".ics,text/calendar" hidden>${S.chores.length ? '<button class="btn danger" id="icsClear">Remove all chores</button>' : ''}</div>
       ${icsMsg ? `<p class="saved" style="margin-top:8px">${esc(icsMsg)}</p>` : ''}
-      ${S.chores.length ? `<div style="margin-top:10px">${S.chores.map(c => ({c, n:nextDue(c)})).sort((a, b) => (a.n ? a.n - 0 : 9e15) - (b.n ? b.n - 0 : 9e15) || a.c.title.localeCompare(b.c.title)).map(({c, n}) => `<div class="chore"><span class="ct">${esc(c.title)}<small>${n ? 'Next ' + esc(longD(n)) + ' · ' : 'Ended · '}${esc(ruleText(c))}${c.time ? ' · ' + fmtT(toMin(c.time)) : ''}${c.mins ? ' · ' + fmtDur(c.mins) : ''}</small></span><button class="iconbtn" data-delch="${c.id}" aria-label="Remove ${esc(c.title)}">✕</button></div>`).join('')}</div>` : ''}</div>
+      ${S.chores.length ? `<div style="margin-top:10px">${S.chores.map(c => ({c, n:nextDue(c)})).sort((a, b) => (a.n ? a.n - 0 : 9e15) - (b.n ? b.n - 0 : 9e15) || a.c.title.localeCompare(b.c.title)).map(({c, n}) => `<div class="chore"><button type="button" class="ct choreedit" data-editch="${c.id}">${esc(c.title)}<small>${n ? 'Next ' + esc(longD(n)) + ' · ' : 'Ended · '}${esc(ruleText(c))}${c.time ? ' · ' + fmtT(toMin(c.time)) : ''}${c.mins ? ' · ' + fmtDur(c.mins) : ''}</small></button><button class="iconbtn" data-delch="${c.id}" aria-label="Remove ${esc(c.title)}">✕</button></div>`).join('')}</div>` : ''}</div>
     <div class="card"><h2>Add your week to a calendar</h2><p class="hint">Download your week as a calendar file (.ics) with each block repeating weekly, to import into Apple Calendar, Google Calendar or any other calendar app. Changes here don’t update it, so download it again after big changes.</p>
       <div class="row"><button class="btn" id="icsOut">Download calendar file</button><label class="row small muted" style="gap:6px"><input type="checkbox" id="icsSkip" checked style="width:18px;height:18px;accent-color:var(--accent)">Leave out Work, Meals and Routine</label></div></div>
     <div class="card"><h2>Your data</h2>
@@ -948,7 +952,9 @@ function renderSettings(){
   $('icsPick').onclick = () => $('icsFile').click();
   $('icsFile').onchange = e => { const f = e.target.files[0]; if(f) importICS(f); e.target.value = ''; };
   if($('icsClear')) $('icsClear').onclick = () => { if(!confirm('Remove all ' + S.chores.length + ' imported chores?')) return; S.chores = []; S.choreDone = {}; save(); renderSettings(); };
-  el.querySelectorAll('[data-delch]').forEach(b => b.onclick = () => { S.chores = S.chores.filter(c => c.id !== b.dataset.delch); save(); renderSettings(); });
+  el.querySelectorAll('[data-delch]').forEach(b => b.onclick = () => { const c = S.chores.find(x => x.id === b.dataset.delch); if(c && !confirm('Remove “' + c.title + '”?')) return; S.chores = S.chores.filter(x => x.id !== b.dataset.delch); save(); renderSettings(); });
+  el.querySelectorAll('[data-editch]').forEach(b => b.onclick = () => editChore(S.chores.find(c => c.id === b.dataset.editch)));
+  $('choreAdd').onclick = () => editChore(null);
   $('icsOut').onclick = () => exportICS($('icsSkip').checked);
   $('bkDown').onclick = downloadBackup;
   $('bkRestore').onclick = pickRestore;
@@ -957,6 +963,73 @@ function renderSettings(){
     dataName:FILE_BASE + '-backup-' + todayStr() + '.json', data:backupJSON, restore:'go to Settings → Restore from backup', done:markBackedUp, say:toast});
   $('resetWeek').onclick = () => { if(!confirm('Replace every block in your week with the sample week? Your chores, goals and workouts stay.')) return; useSample(); save(); setMsg = 'Your week is now the sample week.'; renderSettings(); };
   $('wipe').onclick = () => { if(!confirm('Erase your whole schedule, chores, goals and workouts? This can’t be undone. Download a backup first if you might want it back.')) return; S = blank(); save(); go('today'); toast('Everything erased'); };
+}
+const NTH = ['', '1st', '2nd', '3rd', '4th', '5th'];
+function editChore(c, onDate){
+  const isNew = !c, r = c && c.rule;
+  const x = c || {title:'', note:'', date:ymd(onDate || today()), time:'', mins:30, rule:null, ex:[]};
+  const freq = r ? r.freq : 'NONE';
+  const wdays = r && r.freq === 'WEEKLY' && r.byday && r.byday.length ? r.byday.map(b => b.d) : [dow(parseYmd(x.date))];
+  const mMode = r && r.freq === 'MONTHLY' && r.byday && r.byday.length ? (r.byday[0].n < 0 ? 'last' : 'nth') : 'day';
+  openModal(`<h2>${isNew ? 'Add a chore' : 'Edit chore'}</h2>
+    <label class="f">What<input type="text" id="cTitle" value="${esc(x.title)}" placeholder="e.g. Clean the bathroom" maxlength="120"></label>
+    <div class="two"><label class="f"><span id="cDateL">${r ? 'Starts' : 'Date'}</span><input type="date" id="cDate" value="${esc(x.date)}"></label>
+      <label class="f">Time (optional)<input type="time" id="cTime" value="${esc(x.time || '')}"></label></div>
+    <div class="two"><label class="f">Takes (minutes)<input type="number" id="cMins" min="0" max="1440" step="5" value="${x.mins || ''}" placeholder="Optional"></label>
+      <label class="f">Repeats<select id="cFreq">${[['NONE', 'Doesn’t repeat'], ['DAILY', 'Daily'], ['WEEKLY', 'Weekly'], ['MONTHLY', 'Monthly'], ['YEARLY', 'Yearly']].map(([v, t]) => `<option value="${v}" ${v === freq ? 'selected' : ''}>${t}</option>`).join('')}</select></label></div>
+    <div id="cRep">
+      <div class="two"><label class="f">Every<span class="row" style="gap:6px;flex-wrap:nowrap"><input type="number" id="cInt" min="1" max="99" value="${r ? r.interval : 1}" style="width:80px"><span id="cUnit" class="muted"></span></span></label>
+        <label class="f">Until (optional)<input type="date" id="cUntil" value="${esc(r && r.until || '')}"></label></div>
+      <div id="cWeek" style="margin-top:10px"><div style="font-size:13px;color:var(--ink-soft);font-weight:600;margin-bottom:4px">On</div>
+        <div class="checks">${DOW3.map((dn, i) => `<label><input type="checkbox" data-cwd="${i}" ${wdays.includes(i) ? 'checked' : ''}>${dn}</label>`).join('')}</div></div>
+      <label class="f" id="cMonth" style="margin-top:10px">On<select id="cMMode"></select></label>
+    </div>
+    <label class="f">Note<input type="text" id="cNote" value="${esc(x.note || '')}" placeholder="Optional" maxlength="200"></label>
+    ${!isNew && c.uid ? '<p class="note" style="margin:0">This chore came from a calendar file. Importing that file again replaces your changes here.</p>' : ''}
+    <p class="err" id="cErr"></p>
+    <div class="acts">${isNew ? '' : '<button class="btn danger grow" id="cDel">Delete</button>'}<button class="btn" id="cCancel">Cancel</button><button class="btn pri" id="cSave">Save</button></div>`);
+  const upd = () => {
+    const f = $('cFreq').value, n = Math.max(1, parseInt($('cInt').value, 10) || 1), d = parseYmd($('cDate').value || ymd(today()));
+    $('cRep').hidden = f === 'NONE'; $('cDateL').textContent = f === 'NONE' ? 'Date' : 'Starts';
+    $('cUnit').textContent = ({DAILY:['day', 'days'], WEEKLY:['week', 'weeks'], MONTHLY:['month', 'months'], YEARLY:['year', 'years']}[f] || ['', ''])[n === 1 ? 0 : 1];
+    $('cWeek').hidden = f !== 'WEEKLY'; $('cMonth').hidden = f !== 'MONTHLY';
+    // monthly: the same date, the same weekday by number (3rd Thursday), or the last such weekday
+    const md = d.getDate(), wd = DOW[dow(d)], nth = Math.ceil(md / 7), isLast = md + 7 > new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+    const cur = $('cMMode').value || mMode;
+    $('cMMode').innerHTML = `<option value="day">Day ${md} of the month</option>` + (nth <= 4 ? `<option value="nth">The ${NTH[nth]} ${wd}</option>` : '') + (isLast ? `<option value="last">The last ${wd}</option>` : '');
+    $('cMMode').value = [...$('cMMode').options].some(o => o.value === cur) ? cur : 'day';
+  };
+  ['cFreq', 'cInt', 'cDate'].forEach(id => $(id).addEventListener('input', upd));
+  upd();
+  $('cCancel').onclick = closeModal;
+  if(!isNew) $('cDel').onclick = () => { if(!confirm('Delete “' + x.title + '”?')) return; S.chores = S.chores.filter(y => y.id !== c.id); save(); closeModal(); render(); toast('Chore deleted'); };
+  $('cSave').onclick = () => {
+    const t = $('cTitle').value.trim(), date = $('cDate').value, f = $('cFreq').value;
+    if(!t) return void ($('cErr').textContent = 'Give it a name.');
+    if(!date) return void ($('cErr').textContent = 'Pick a date.');
+    let rule = null;
+    if(f !== 'NONE'){
+      const d = parseYmd(date);
+      rule = {freq:f, interval:Math.max(1, parseInt($('cInt').value, 10) || 1)};
+      if(f === 'WEEKLY'){
+        const days = [...$('mbox').querySelectorAll('[data-cwd]')].filter(i => i.checked).map(i => ({n:0, d:+i.dataset.cwd}));
+        if(!days.length) return void ($('cErr').textContent = 'Pick at least one day of the week.');
+        rule.byday = days;
+      }
+      if(f === 'MONTHLY'){
+        const m = $('cMMode').value;
+        if(m === 'nth') rule.byday = [{n:Math.ceil(d.getDate() / 7), d:dow(d)}];
+        else if(m === 'last') rule.byday = [{n:-1, d:dow(d)}];
+        else rule.bymonthday = [d.getDate()];
+      }
+      const u = $('cUntil').value;
+      if(u){ if(u < date) return void ($('cErr').textContent = 'The end date has to be after the start.'); rule.until = u; }
+    }
+    const v = {title:t, note:$('cNote').value.trim(), date, time:$('cTime').value || null, mins:Math.max(0, parseInt($('cMins').value, 10) || 0), rule};
+    if(isNew) S.chores.push({id:uid(), uid:'', ex:[], ...v});
+    else { Object.assign(c, v); c.ex = (c.ex || []).filter(k => k >= date); }
+    save(); closeModal(); render(); toast(isNew ? 'Chore added' : 'Saved');
+  };
 }
 function importICS(f){
   const r = new FileReader();
