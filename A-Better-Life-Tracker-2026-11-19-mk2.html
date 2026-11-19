@@ -219,7 +219,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 mk1 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 mk2 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -231,7 +231,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-19 mk1</span></div>
+      <span class="ver" id="appVer">2026-11-19 mk2</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -263,6 +263,7 @@
   <section class="view stack" id="v-settings" hidden></section>
 </div>
 <div class="modal" id="modal" hidden><div class="mbox" id="mbox" role="dialog" aria-modal="true"></div></div>
+<div class="modal" id="askm" hidden style="z-index:45"><div class="mbox" id="askbox" role="alertdialog" aria-modal="true"></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 /* ---- download this app: the HTML file for this exact version ----
@@ -329,7 +330,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19 mk1', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19 mk2', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -740,10 +741,26 @@ function renderWeek(){
   $('wkChore').onclick = () => editChore(null, d);
   wireChores(el, d);
 }
+// the app's own yes/no and notice panels. Built-in confirm() and alert() pop-ups are avoided: on iPhone,
+// one shown right after picking a file (as when restoring a backup) can freeze or crash the page.
+let askDone = null;
+function ask(msg, okLabel, danger, cancelLabel){
+  return new Promise(res => {
+    $('askbox').innerHTML = `<p style="margin:0;font-size:15.5px;line-height:1.5">${esc(msg)}</p>
+      <div class="acts">${cancelLabel === false ? '' : `<button class="btn" id="askNo">${esc(cancelLabel || 'Cancel')}</button>`}<button class="btn ${danger ? 'danger' : 'pri'}" id="askYes">${esc(okLabel || 'OK')}</button></div>`;
+    $('askm').hidden = false;
+    askDone = v => { $('askm').hidden = true; askDone = null; res(v); };
+    $('askYes').onclick = () => askDone(true);
+    if($('askNo')) $('askNo').onclick = () => askDone(false);
+    setTimeout(() => $('askYes').focus(), 30);
+  });
+}
+const tell = msg => ask(msg, 'OK', false, false);
+$('askm').onclick = e => { if(e.target === $('askm') && askDone) askDone(false); };
 function openModal(html){ $('mbox').innerHTML = html; $('modal').hidden = false; document.body.style.overflow = 'hidden'; const f = $('mbox').querySelector('input,select'); if(f && matchMedia('(min-width:641px)').matches) f.focus(); }
 function closeModal(){ $('modal').hidden = true; document.body.style.overflow = ''; }
 $('modal').onclick = e => { if(e.target === $('modal')) closeModal(); };
-document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('modal').hidden) closeModal(); });
+document.addEventListener('keydown', e => { if(e.key !== 'Escape') return; if(askDone) askDone(false); else if(!$('modal').hidden) closeModal(); });
 function editBlock(b){
   const isNew = !b;
   const x = b || {day:weekDay, start:'', end:'', title:'', cat:S.cats[0].id, note:'', kind:''};
@@ -758,7 +775,7 @@ function editBlock(b){
     <p class="err" id="bErr"></p>
     <div class="acts">${isNew ? '' : '<button class="btn danger grow" id="bDel">Delete</button>'}<button class="btn" id="bCancel">Cancel</button><button class="btn pri" id="bSave">Save</button></div>`);
   $('bCancel').onclick = closeModal;
-  if(!isNew) $('bDel').onclick = () => { if(!confirm('Delete “' + x.title + '” from ' + DOW[x.day] + '?')) return; S.blocks = S.blocks.filter(y => y.id !== x.id); save(); closeModal(); renderWeek(); toast('Block deleted'); };
+  if(!isNew) $('bDel').onclick = async () => { if(!await ask('Delete “' + x.title + '” from ' + DOW[x.day] + '?', 'Delete', true)) return; S.blocks = S.blocks.filter(y => y.id !== x.id); save(); closeModal(); renderWeek(); toast('Block deleted'); };
   $('bSave').onclick = () => {
     const t = $('bTitle').value.trim(), s = $('bStart').value, e = $('bEnd').value;
     if(!t) return void ($('bErr').textContent = 'Give it a name.');
@@ -779,11 +796,11 @@ function copyDay(){
     <p class="err" id="cErr"></p>
     <div class="acts"><button class="btn" id="cCancel">Cancel</button><button class="btn pri" id="cGo">Copy</button></div>`);
   $('cCancel').onclick = closeModal;
-  $('cGo').onclick = () => {
+  $('cGo').onclick = async () => {
     const days = [...$('mbox').querySelectorAll('[data-cday]')].filter(i => i.checked).map(i => +i.dataset.cday);
     if(!days.length) return void ($('cErr').textContent = 'Pick at least one day.');
     const src = dayBlocks(from);
-    if(days.some(dd => dayBlocks(dd).length) && !confirm('Replace what’s planned on ' + days.filter(dd => dayBlocks(dd).length).map(dd => DOW[dd]).join(', ') + '?')) return;
+    if(days.some(dd => dayBlocks(dd).length) && !await ask('Replace what’s planned on ' + days.filter(dd => dayBlocks(dd).length).map(dd => DOW[dd]).join(', ') + '?', 'Replace', true)) return;
     S.blocks = S.blocks.filter(b => !days.includes(b.day));
     days.forEach(dd => src.forEach(b => S.blocks.push({...b, id:uid(), day:dd})));
     save(); closeModal(); renderWeek(); toast('Copied to ' + days.map(dd => DOW3[dd]).join(', '));
@@ -943,16 +960,16 @@ function renderSettings(){
   $('sClock').onchange = e => { S.clock24 = e.target.value === '24'; save(); toast('Saved'); };
   el.querySelectorAll('.catrow input').forEach(i => i.onchange = () => { const c = S.cats.find(x => x.id === i.closest('.catrow').dataset.cat); if(!c) return;
     if(i.dataset.f === 'target') c.target = Math.max(0, num(i.value)); else if(i.dataset.f === 'name') c.name = i.value.trim() || c.name; else c.color = i.value; save(); toast('Saved'); });
-  el.querySelectorAll('[data-delcat]').forEach(b => b.onclick = () => {
+  el.querySelectorAll('[data-delcat]').forEach(b => b.onclick = async () => {
     const id = b.dataset.delcat, used = S.blocks.filter(x => x.cat === id).length;
-    if(S.cats.length < 2) return alert('Keep at least one category.');
-    if(used){ const to = S.cats.find(c => c.id !== id); if(!confirm(used + ' block' + (used === 1 ? ' uses' : 's use') + ' this category. Delete it and move them to “' + to.name + '”?')) return; S.blocks.forEach(x => { if(x.cat === id) x.cat = to.id; }); }
+    if(S.cats.length < 2) return void tell('Keep at least one category.');
+    if(used){ const to = S.cats.find(c => c.id !== id); if(!await ask(used + ' block' + (used === 1 ? ' uses' : 's use') + ' this category. Delete it and move them to “' + to.name + '”?', 'Delete', true)) return; S.blocks.forEach(x => { if(x.cat === id) x.cat = to.id; }); }
     S.cats = S.cats.filter(c => c.id !== id); save(); renderSettings(); });
   $('addCat').onclick = () => { S.cats.push({id:uid(), name:'New category', color:'#4b8bbe', target:0}); save(); renderSettings(); };
   $('icsPick').onclick = () => $('icsFile').click();
   $('icsFile').onchange = e => { const f = e.target.files[0]; if(f) importICS(f); e.target.value = ''; };
-  if($('icsClear')) $('icsClear').onclick = () => { if(!confirm('Remove all ' + S.chores.length + ' imported chores?')) return; S.chores = []; S.choreDone = {}; save(); renderSettings(); };
-  el.querySelectorAll('[data-delch]').forEach(b => b.onclick = () => { const c = S.chores.find(x => x.id === b.dataset.delch); if(c && !confirm('Remove “' + c.title + '”?')) return; S.chores = S.chores.filter(x => x.id !== b.dataset.delch); save(); renderSettings(); });
+  if($('icsClear')) $('icsClear').onclick = async () => { if(!await ask('Remove all ' + S.chores.length + ' chores?', 'Remove all', true)) return; S.chores = []; S.choreDone = {}; save(); renderSettings(); };
+  el.querySelectorAll('[data-delch]').forEach(b => b.onclick = async () => { const c = S.chores.find(x => x.id === b.dataset.delch); if(c && !await ask('Remove “' + c.title + '”?', 'Remove', true)) return; S.chores = S.chores.filter(x => x.id !== b.dataset.delch); save(); renderSettings(); });
   el.querySelectorAll('[data-editch]').forEach(b => b.onclick = () => editChore(S.chores.find(c => c.id === b.dataset.editch)));
   $('choreAdd').onclick = () => editChore(null);
   $('icsOut').onclick = () => exportICS($('icsSkip').checked);
@@ -961,8 +978,8 @@ function renderSettings(){
   $('bkFile').onchange = e => { restoreFile(e.target.files[0]); e.target.value = ''; };
   $('selfDl').onclick = () => downloadBundle({title:APP_NAME, version:APP_VERSION, base:FILE_BASE, htmlName:FILE_BASE + '-' + APP_VERSION.replace(/ /g, '-') + '.html',
     dataName:FILE_BASE + '-backup-' + todayStr() + '.json', data:backupJSON, restore:'go to Settings → Restore from backup', done:markBackedUp, say:toast});
-  $('resetWeek').onclick = () => { if(!confirm('Replace every block in your week with the sample week? Your chores, goals and workouts stay.')) return; useSample(); save(); setMsg = 'Your week is now the sample week.'; renderSettings(); };
-  $('wipe').onclick = () => { if(!confirm('Erase your whole schedule, chores, goals and workouts? This can’t be undone. Download a backup first if you might want it back.')) return; S = blank(); save(); go('today'); toast('Everything erased'); };
+  $('resetWeek').onclick = async () => { if(!await ask('Replace every block in your week with the sample week? Your chores, goals and workouts stay.', 'Replace', true)) return; useSample(); save(); setMsg = 'Your week is now the sample week.'; renderSettings(); };
+  $('wipe').onclick = async () => { if(!await ask('Erase your whole schedule, chores, goals and workouts? This can’t be undone. Download a backup first if you might want it back.', 'Erase everything', true)) return; S = blank(); save(); go('today'); toast('Everything erased'); };
 }
 const NTH = ['', '1st', '2nd', '3rd', '4th', '5th'];
 function editChore(c, onDate){
@@ -1002,7 +1019,7 @@ function editChore(c, onDate){
   ['cFreq', 'cInt', 'cDate'].forEach(id => $(id).addEventListener('input', upd));
   upd();
   $('cCancel').onclick = closeModal;
-  if(!isNew) $('cDel').onclick = () => { if(!confirm('Delete “' + x.title + '”?')) return; S.chores = S.chores.filter(y => y.id !== c.id); save(); closeModal(); render(); toast('Chore deleted'); };
+  if(!isNew) $('cDel').onclick = async () => { if(!await ask('Delete “' + x.title + '”?', 'Delete', true)) return; S.chores = S.chores.filter(y => y.id !== c.id); save(); closeModal(); render(); toast('Chore deleted'); };
   $('cSave').onclick = () => {
     const t = $('cTitle').value.trim(), date = $('cDate').value, f = $('cFreq').value;
     if(!t) return void ($('cErr').textContent = 'Give it a name.');
@@ -1036,7 +1053,7 @@ function importICS(f){
   r.onload = () => {
     let list;
     try{ list = parseICS(r.result); }catch(e){ list = []; }
-    if(!/BEGIN:VCALENDAR/i.test(r.result) || !list.length){ alert('No events were found in that file. Pick a calendar file (.ics) with your chores in it.'); return; }
+    if(!/BEGIN:VCALENDAR/i.test(r.result) || !list.length){ tell('No events were found in that file. Pick a calendar file (.ics) with your chores in it.'); return; }
     const all = list.length; list = list.filter(c => nextDue(c));
     let added = 0, updated = 0; const before = new Set(S.chores.map(x => x.id));
     list.forEach(c => {
@@ -1075,13 +1092,20 @@ function pickRestore(){
 function restoreFile(f){
   if(!f) return;
   const r = new FileReader();
+  r.onerror = () => tell('That file couldn’t be read.');
   r.onload = () => {
-    try{
-      const o = JSON.parse(r.result);
-      if(!o || o.app !== APP_NAME || !o.data) throw new Error('This isn’t a backup from ' + APP_NAME + '.');
-      if(S.setup && !confirm('Replace everything in this tracker with the backup from ' + (o.exported ? longD(new Date(o.exported)) : 'that file') + '?')) return;
-      const lb = S.lastBackup; S = fix(o.data); S.lastBackup = lb || S.lastBackup; save(); toast('Backup restored'); go('today');
-    }catch(e){ alert(e.message || 'That file couldn’t be read.'); }
+    let o;
+    try{ o = JSON.parse(r.result); }catch(e){ o = null; }
+    if(!o || o.app !== APP_NAME || !o.data || typeof o.data !== 'object'){ tell('This isn’t a backup from ' + APP_NAME + '.'); return; }
+    // let the phone finish closing its file picker before asking anything
+    setTimeout(async () => {
+      if(S.setup && !await ask('Replace everything in this tracker with the backup from ' + (o.exported ? longD(new Date(o.exported)) : 'that file') + '?', 'Restore', true)) return;
+      try{
+        const lb = S.lastBackup, next = fix(JSON.parse(JSON.stringify(o.data)));
+        S = next; S.lastBackup = lb || S.lastBackup;
+        closeModal(); save(); toast('Backup restored'); go('today');
+      }catch(e){ tell('That backup couldn’t be restored: ' + (e.message || 'unknown problem') + '. Your current data wasn’t changed.'); }
+    }, 250);
   };
   r.readAsText(f);
 }
