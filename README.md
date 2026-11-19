@@ -6,7 +6,7 @@
 
 **Weekly Schedule & Balance: plan your week in time blocks, tick them off each day, and see whether your hours match your goals**
 
-![Version](https://img.shields.io/badge/version-2026--11--18-1F6B62)
+![Version](https://img.shields.io/badge/version-2026--11--19-1F6B62)
 ![Single file](https://img.shields.io/badge/single%20file-HTML-E0823A)
 ![No account needed](https://img.shields.io/badge/no%20sign--up-required-334155)
 ![PageVault ready](https://img.shields.io/badge/PageVault-ready-2563eb)
@@ -29,6 +29,7 @@ A Better Life Tracker is a weekly planner for everything you're trying to fit in
 
 - **Today at a glance.** What you should be doing right now, how long is left and what's next, plus today's whole plan with a check box for each block and today's chores.
 - **Your week in time blocks.** Pick a day and tap any block to change its time, name, category or note. Add a block to several days at once, or copy a whole day onto others. Overlapping blocks are flagged.
+- **Month at a glance.** A calendar for any month: each day shows its plan as a colored bar, its workouts (Lift A, Lift B, Run) and the chores due, and past days show how many activities you ticked off. Tap a day to see its whole plan and chores, and tick them off from there. On a phone, workouts and chores show as dots.
 - **Categories and weekly goals.** Color-coded categories (Fitness, Learning, Hobbies, Games, Friends & family, Chores and more), each with an optional goal in hours a week. Rename them, recolor them and add your own.
 - **Balance.** For each category: hours planned, hours ticked off this week, and your goal, with *On target*, *short* or *over* at a glance. It also shows your total planned time, unplanned awake time and roughly how much sleep your schedule leaves.
 - **Workouts.** Lifting blocks alternate **Workout A** and **Workout B**, and each week picks up where the last one left off. Each workout has its own exercises, sets, reps, rest and a place to note the weight you use. Edit the exercises, run notes and tips to fit your own gym.
@@ -41,13 +42,13 @@ A Better Life Tracker is a weekly planner for everything you're trying to fit in
 
 ## Screenshots
 
-| Your week | Balance |
+| Your week | Month |
 |---|---|
-| ![Week: pick a day and tap a block to change it](docs/screenshots/week.png) | ![Balance: hours planned and done against each goal](docs/screenshots/balance.png) |
+| ![Week: pick a day and tap a block to change it](docs/screenshots/week.png) | ![Month: every day's plan, workouts and chores](docs/screenshots/month.png) |
 
-| Workouts |
-|---|
-| ![Workouts: this week's A/B rotation and runs, and each workout's exercises](docs/screenshots/workouts.png) |
+| Balance | Workouts |
+|---|---|
+| ![Balance: hours planned and done against each goal](docs/screenshots/balance.png) | ![Workouts: this week's A/B rotation and runs, and each workout's exercises](docs/screenshots/workouts.png) |
 
 ## Getting started
 
@@ -91,7 +92,7 @@ Moving between the two: back up on one side and **Restore from backup** on the o
 
 ## Versioning
 
-Only the newest release is kept in the repo: `A-Better-Life-Tracker-2026-11-18.html`. Each new release replaces it, and `docs/index.html` (what the web link opens) is updated to match. Your data isn't stored in the file, so moving to a new release keeps it.
+Only the newest release is kept in the repo: `A-Better-Life-Tracker-2026-11-19.html`. Each new release replaces it, and `docs/index.html` (what the web link opens) is updated to match. Your data isn't stored in the file, so moving to a new release keeps it.
 
 Releases are named with their date. The first release of a day is just the date; later releases that same day add `mk1`, `mk2`, `mk3`… (the count starts over each day). The version is also shown inside the app.
 
@@ -101,4 +102,5 @@ Every release so far, newest first. Older releases are listed for reference; onl
 
 | Version | Notes |
 |---|---|
+| **2026-11-19** | **Month** tab: a calendar of any month showing each day's plan, workouts and chores due, with how much you ticked off on past days. Tap a day for its full plan and chores. |
 | **2026-11-18** | First release. Today, Week, Balance, Workouts and Settings tabs; categories with weekly goals; an A/B lifting rotation; chores imported from a calendar file (`.ics`); your week exported as a calendar file; backups, the app + data zip, and PageVault support. |

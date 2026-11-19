@@ -153,6 +153,37 @@
   .wsched .ws b{font-size:15px}
   .wsched .ws.td{border-color:var(--shu);box-shadow:inset 0 0 0 1px var(--shu)}
   .wsched .ws.ok b::after{content:" ✓";color:var(--good)}
+  /* month */
+  .mhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+  .mhead b{font-size:17px}
+  .mnav{display:flex;gap:6px}
+  .mdow,.mgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+  .mdow span{font-size:11.5px;font-weight:700;color:var(--ink-soft);text-align:center;padding-bottom:2px}
+  .mcell{font:inherit;text-align:left;color:var(--ink);min-height:96px;border:1px solid var(--line);border-radius:9px;padding:5px;background:var(--surface-2);cursor:pointer;display:flex;flex-direction:column;gap:3px;min-width:0;overflow:hidden}
+  .mcell:hover{border-color:var(--accent)}
+  .mcell.out{opacity:.45}
+  .mcell.td{border-color:var(--shu);box-shadow:inset 0 0 0 1px var(--shu)}
+  .mcell .mtop{display:flex;justify-content:space-between;align-items:center;gap:2px}
+  .mcell .mnum{font-weight:800;font-size:13px}
+  .mcell .mprog{font-size:10.5px;font-weight:700;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .mcell .mprog.full{color:var(--good)}
+  .mstack{display:flex;height:7px;border-radius:999px;overflow:hidden;background:var(--line-soft)}
+  .mstack i{display:block;height:100%}
+  .mtag{font-size:10.5px;font-weight:700;line-height:1.35;border-radius:4px;padding:0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:color-mix(in srgb,var(--c) 18%,transparent)}
+  .mtag.done{text-decoration:line-through;opacity:.6}
+  .mcnt{display:none;flex-wrap:wrap;gap:3px;margin-top:2px}
+  .mcnt i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+  .mcnt i.done{opacity:.35}
+  .mbox > *{flex:none}
+  .mphone{display:none}
+  .legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  @media (max-width:560px){
+    .mcell{min-height:66px;padding:4px 3px}
+    .mcell .mtag,.mcell .mmore{display:none}
+    .mcell .mcnt{display:flex}
+    .mcell .mprog{display:none}
+    .mphone{display:inline}
+  }
   .catrow{display:grid;grid-template-columns:42px minmax(0,1fr) 92px auto;gap:8px;align-items:center;margin:6px 0}
   .iconbtn{border:0;background:none;color:var(--ink-soft);cursor:pointer;font-size:15px;padding:6px 8px;border-radius:6px;font:inherit}
   .iconbtn:hover{color:var(--ink);background:var(--line-soft)}
@@ -185,7 +216,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-18 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -197,7 +228,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-18</span></div>
+      <span class="ver" id="appVer">2026-11-19</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -216,12 +247,14 @@
   <nav class="tabs" role="tablist" aria-label="Sections">
     <button role="tab" data-v="today" aria-selected="true">Today</button>
     <button role="tab" data-v="week" aria-selected="false">Week</button>
+    <button role="tab" data-v="month" aria-selected="false">Month</button>
     <button role="tab" data-v="balance" aria-selected="false">Balance</button>
     <button role="tab" data-v="workouts" aria-selected="false">Workouts</button>
     <button role="tab" data-v="settings" aria-selected="false">Settings</button>
   </nav>
   <section class="view stack" id="v-today"></section>
   <section class="view stack" id="v-week" hidden></section>
+  <section class="view stack" id="v-month" hidden></section>
   <section class="view stack" id="v-balance" hidden></section>
   <section class="view stack" id="v-workouts" hidden></section>
   <section class="view stack" id="v-settings" hidden></section>
@@ -293,7 +326,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-18', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -474,7 +507,7 @@ applyTheme((() => { try{ return localStorage.getItem(THEME_KEY) || 'auto'; }catc
 document.querySelectorAll('#theme button').forEach(b => b.onclick = () => { try{ localStorage.setItem(THEME_KEY, b.dataset.t); }catch(e){} applyTheme(b.dataset.t); });
 
 /* ---- tabs ---- */
-const VIEWS = ['today', 'week', 'balance', 'workouts', 'settings'];
+const VIEWS = ['today', 'week', 'month', 'balance', 'workouts', 'settings'];
 let view = 'today', weekDay = dow(today());
 function go(v){
   if(!VIEWS.includes(v)) v = 'today';
@@ -485,7 +518,7 @@ function go(v){
   render();
 }
 document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => { go(b.dataset.v); window.scrollTo({top:0}); });
-function render(){ ({today:renderToday, week:renderWeek, balance:renderBalance, workouts:renderWorkouts, settings:renderSettings})[view](); }
+function render(){ ({today:renderToday, week:renderWeek, month:renderMonth, balance:renderBalance, workouts:renderWorkouts, settings:renderSettings})[view](); }
 
 /* ================================================================ chores from a calendar file (.ics) */
 const unesc = s => String(s || '').replace(/\\n/gi, '\n').replace(/\\([,;\\])/g, '$1').trim();
@@ -751,6 +784,61 @@ function copyDay(){
     days.forEach(dd => src.forEach(b => S.blocks.push({...b, id:uid(), day:dd})));
     save(); closeModal(); renderWeek(); toast('Copied to ' + days.map(dd => DOW3[dd]).join(', '));
   };
+}
+
+/* ================================================================ Month */
+let monthCur = new Date(today().getFullYear(), today().getMonth(), 1);
+const MAIN_SKIP = ['work', 'routine', 'meals'];
+function renderMonth(){
+  const el = $('v-month'), y = monthCur.getFullYear(), m = monthCur.getMonth();
+  const first = new Date(y, m, 1), last = new Date(y, m + 1, 0), start = mondayOf(first);
+  const weeks = Math.ceil((dow(first) + last.getDate()) / 7), tdS = todayStr();
+  let cells = '', choreN = 0, fitN = 0;
+  for(let i = 0; i < weeks * 7; i++){
+    const d = addDays(start, i), k = ymd(d), inM = d.getMonth() === m, bl = dayBlocks(dow(d)), ch = choresOn(d);
+    if(inM){ choreN += ch.length; fitN += bl.filter(b => b.kind === 'lift' || b.kind === 'run').length; }
+    // the day's planned hours by category, as one thin bar
+    const hrs = {}; let tot = 0;
+    bl.forEach(b => { hrs[b.cat] = (hrs[b.cat] || 0) + dur(b); tot += dur(b); });
+    const stack = tot ? S.cats.filter(c => hrs[c.id]).map(c => `<i style="width:${hrs[c.id] / tot * 100}%;background:${esc(c.color)}"></i>`).join('') : '';
+    const goals = bl.filter(b => !MAIN_SKIP.includes(b.cat)), gd = goals.filter(b => isDone(d, b.id)).length;
+    const showProg = k <= tdS && goals.length;
+    const fit = bl.filter(b => b.kind === 'lift' || b.kind === 'run').map(b => `<span class="mtag${isDone(d, b.id) ? ' done' : ''}" style="--c:${esc(catById(b.cat).color)}">${b.kind === 'lift' ? 'Lift ' + liftLetter(b, d) : 'Run'}</span>`).join('');
+    const chores = ch.slice(0, 3).map(c => `<span class="mtag${choreDone(d, c.id) ? ' done' : ''}" style="--c:${esc(catById('chores').color)}">${esc(c.title)}</span>`).join('') + (ch.length > 3 ? `<span class="note mmore" style="font-size:10.5px">+${ch.length - 3} more</span>` : '');
+    // on a phone: a dot for each workout and chore
+    const cnt = bl.filter(b => b.kind === 'lift' || b.kind === 'run').map(b => `<i class="${isDone(d, b.id) ? 'done' : ''}" style="--c:${esc(catById(b.cat).color)}"></i>`).join('')
+      + ch.map(c => `<i class="${choreDone(d, c.id) ? 'done' : ''}" style="--c:${esc(catById('chores').color)}"></i>`).join('');
+    cells += `<button type="button" class="mcell${inM ? '' : ' out'}${k === tdS ? ' td' : ''}" data-mday="${k}" aria-label="${esc(longD(d))}">
+      <span class="mtop"><span class="mnum">${d.getDate()}</span>${showProg ? `<span class="mprog${gd === goals.length ? ' full' : ''}">${gd}/${goals.length}</span>` : ''}</span>
+      ${stack ? `<span class="mstack">${stack}</span>` : ''}${fit}${chores}<span class="mcnt">${cnt}</span></button>`;
+  }
+  const used = S.cats.filter(c => S.blocks.some(b => b.cat === c.id));
+  el.innerHTML = `<div class="card">
+    <div class="mhead"><b>${first.toLocaleDateString(undefined, {month:'long', year:'numeric'})}</b>
+      <span class="mnav"><button class="btn sm" id="mPrev" aria-label="Previous month">‹</button><button class="btn sm" id="mToday">Today</button><button class="btn sm" id="mNext" aria-label="Next month">›</button></span></div>
+    <p class="hint">Each day shows its plan as a colored bar, plus workouts and chores due. Past days show how many activities you ticked off. Tap a day to see all of it.<span class="mphone"> On a phone, each dot is a workout or a chore.</span></p>
+    <div class="mdow">${DOW3.map(x => `<span>${x}</span>`).join('')}</div>
+    <div class="mgrid">${cells}</div>
+    <div class="legend">${used.map(c => chip(c.id)).join('')}</div></div>
+    <div class="card"><h2>This month</h2><div class="tiles">
+      <div class="tile"><span class="big">${fitN}</span><span class="lbl">workouts planned</span></div>
+      <div class="tile"><span class="big">${choreN}</span><span class="lbl">chores due</span></div></div></div>`;
+  $('mPrev').onclick = () => { monthCur = new Date(y, m - 1, 1); renderMonth(); };
+  $('mNext').onclick = () => { monthCur = new Date(y, m + 1, 1); renderMonth(); };
+  $('mToday').onclick = () => { monthCur = new Date(today().getFullYear(), today().getMonth(), 1); renderMonth(); };
+  el.querySelectorAll('[data-mday]').forEach(b => b.onclick = () => openDay(parseYmd(b.dataset.mday)));
+}
+function openDay(d){
+  const bl = dayBlocks(dow(d)), ch = choresOn(d);
+  openModal(`<h2>${DOW[dow(d)]}, ${esc(longD(d))}</h2>
+    ${bl.length ? `<div class="plan">${bl.map(b => blockRow(b, d)).join('')}</div>` : '<p class="empty">Nothing planned this day.</p>'}
+    <div><b>Chores</b>${ch.length ? ch.map(c => choreRow(c, d)).join('') : '<p class="empty" style="margin:4px 0 0">No chores due.</p>'}</div>
+    <div class="acts"><button class="btn grow" id="dWeek">Edit ${DOW[dow(d)]} on the Week tab</button><button class="btn pri" id="dClose">Close</button></div>`);
+  const box = $('mbox');
+  box.querySelectorAll('[data-done]').forEach(i => i.onchange = () => { setDone(d, i.dataset.done, i.checked); openDay(d); renderMonth(); });
+  box.querySelectorAll('[data-chore]').forEach(i => i.onchange = () => { setChoreDone(d, i.dataset.chore, i.checked); openDay(d); renderMonth(); });
+  $('dClose').onclick = closeModal;
+  $('dWeek').onclick = () => { closeModal(); weekDay = dow(d); go('week'); };
 }
 
 /* ================================================================ Balance */
