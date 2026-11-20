@@ -222,7 +222,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-19 mk5 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-20 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -234,7 +234,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-19 mk5</span></div>
+      <span class="ver" id="appVer">2026-11-20</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -333,7 +333,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-19 mk5', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-20', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -390,7 +390,7 @@ const SAMPLE = [].concat(
   WEEKDAY(1, [[1, '17:15', '17:50', 'Run, easy pace', 'fitness', '30–35 minutes', 'run'], [1, '18:00', '18:45', 'Dinner', 'meals', ''], [1, '18:45', '19:15', 'Study / practice', 'learning', ''], [1, '19:15', '20:00', 'Tidy up', 'chores', 'Dishes, laundry, quick clean'], [1, '20:00', '22:00', 'Games', 'games', '']]),
   WEEKDAY(2, [[2, '17:15', '18:00', 'Lift', 'fitness', '', 'lift'], [2, '18:15', '19:00', 'Dinner', 'meals', ''], [2, '19:00', '19:30', 'Study / practice', 'learning', ''], [2, '19:30', '21:00', 'Hobby time', 'hobbies', ''], [2, '21:00', '22:00', 'Free time', 'free', '']]),
   WEEKDAY(3, [[3, '17:15', '17:50', 'Run, easy pace', 'fitness', '', 'run'], [3, '18:00', '18:45', 'Dinner', 'meals', ''], [3, '18:45', '19:15', 'Study / practice', 'learning', ''], [3, '19:30', '21:30', 'See friends', 'social', 'Coffee, dinner or a call'], [3, '21:30', '22:00', 'Free time', 'free', '']]),
-  WEEKDAY(4, [[4, '17:15', '18:00', 'Lift', 'fitness', '', 'lift'], [4, '18:15', '19:00', 'Dinner', 'meals', ''], [4, '19:00', '22:30', 'Night out or games', 'free', 'Later bedtime is fine']]), [
+  WEEKDAY(4, [[4, '17:15', '18:00', 'Lift', 'fitness', '', 'lift'], [4, '18:15', '19:00', 'Dinner', 'meals', ''], [4, '19:00', '22:00', 'Night out or games', 'free', 'Later bedtime is fine']]), [
   [5, '08:00', '09:00', 'Wake up, breakfast', 'routine', 'Rest day'],
   [5, '09:30', '11:00', 'Chores and errands', 'chores', ''],
   [5, '11:00', '12:00', 'Study / practice', 'learning', 'Longer weekend session'],
@@ -422,7 +422,7 @@ const sampleWorkouts = () => ({
   runs:'Easy runs: conversational pace, 30–40 minutes.\nIntervals (one run a week, optional): 5 min warm-up, 6 × (1 min hard / 2 min easy), 5 min cool-down.',
   tips:'Warm up for 5 minutes before the first exercise.\nStop 1–2 reps short of failure and rest the full time between sets.\nWhen every set hits the top of the rep range, add weight next time.'
 });
-function blank(){ return {v:1, setup:false, clock24:false, cats:CATS.map(c => ({...c})), blocks:[], done:{}, chores:[], choreDone:{}, workouts:sampleWorkouts(), liftAnchor:ymd(mondayOf(today())), lastBackup:null, backupSnooze:null}; }
+function blank(){ return {v:1, setup:false, clock24:false, changes:[], cats:CATS.map(c => ({...c})), blocks:[], done:{}, chores:[], choreDone:{}, workouts:sampleWorkouts(), liftAnchor:ymd(mondayOf(today())), lastBackup:null, backupSnooze:null}; }
 function fix(s){
   if(!s || typeof s !== 'object') return blank();
   const b = blank();
@@ -430,6 +430,8 @@ function fix(s){
   if(!Array.isArray(s.cats) || !s.cats.length) s.cats = b.cats;
   if(!Array.isArray(s.blocks)) s.blocks = [];
   if(!Array.isArray(s.chores)) s.chores = [];
+  if(!Array.isArray(s.changes)) s.changes = [];
+  s.changes = s.changes.filter(c => c && c.date >= ymd(addDays(today(), -120)));
   // older data: mark work, meals, routine and chores as must-do, and lock meal, grocery and shower blocks
   // that sit in another category (like dinner in front of the TV), so fitting the week never moves them
   s.cats.forEach(c => { if(c.must === undefined) c.must = MUST_DO.includes(c.id); });
@@ -463,6 +465,99 @@ const wkIndex = (a, d) => Math.round(daysBetween(mondayOf(a), mondayOf(d)) / 7);
 const blockOn = (b, d) => !(b.every > 1) || ((wkIndex(parseYmd(b.anchor || ymd(mondayOf(today()))), d) % b.every) + b.every) % b.every === 0;
 const blocksOn = d => dayBlocks(dow(d)).filter(b => blockOn(b, d));
 const perWeek = b => dur(b) / (b.every > 1 ? b.every : 1);   // average minutes a week
+
+/* ---- one-day changes: a change covers part of one date's plan with something else (friends asked you out, say).
+   The regular blocks under it are cut away for that date only; make-up changes later that week give back
+   time a goal lost. Next week is the regular plan again. ---- */
+const changesOn = (d, list) => (list || S.changes).filter(c => c.date === ymd(d));
+function plannedOn(d, list){
+  const base = blocksOn(d), ch = changesOn(d, list);
+  if(!ch.length) return base;
+  const out = [];
+  base.forEach(b => {
+    const s0 = toMin(b.start), e0 = s0 + dur(b);
+    let segs = [[s0, e0]];
+    // an adjustment replaces only the time it borrowed (c.from); a change replaces everything under it
+    ch.forEach(c => { if(c.src === 'makeup' && c.from && c.from !== b.cat) return; const cs = toMin(c.start), ce = cs + dur(c);
+      segs = segs.flatMap(([s, e]) => e <= cs || s >= ce ? [[s, e]] : [].concat(s < cs ? [[s, cs]] : [], e > ce ? [[ce, e]] : [])); });
+    segs.forEach(([s, e]) => { if(e - s < 5) return; out.push(s === s0 && e === e0 ? b : {...b, start:hhmm(s), end:hhmm(e % 1440), cut:true}); });
+  });
+  ch.forEach(c => out.push({...c, kind:'', isChange:true}));
+  return out.sort((a, b) => toMin(a.start) - toMin(b.start) || toMin(a.end) - toMin(b.end));
+}
+// minutes of a category in the week that holds date d, with the given changes
+function weekMins(id, d, list){ const mon = mondayOf(d); let t = 0; for(let i = 0; i < 7; i++) plannedOn(addDays(mon, i), list).forEach(b => { if(b.cat === id) t += dur(b); }); return t; }
+// the category to borrow from by default, so goals stay whole where they can:
+// 1. time with no goal that the change covers (free time, say), 2. other time with no goal this week,
+// 3. the goal time the change covers most, 4. the flexible category with the most movable time.
+// Must-do categories, locked blocks and workouts never count.
+function spareCat(d, notId, c){
+  const pool = S.cats.filter(x => !x.must && x.id !== notId), noGoal = id => !(catById(id).target > 0);
+  const mon = mondayOf(d), movable = {};
+  for(let i = 0; i < 7; i++) plannedOn(addDays(mon, i)).forEach(b => { if(pool.some(x => x.id === b.cat) && !b.kind && !b.locked) movable[b.cat] = (movable[b.cat] || 0) + dur(b); });
+  const cov = {};
+  if(c && c.date && c.start && c.end) plannedOn(parseYmd(c.date)).forEach(b => { const s = Math.max(toMin(b.start), toMin(c.start)), e = Math.min(toMin(b.start) + dur(b), toMin(c.start) + dur(c));
+    if(e > s && pool.some(x => x.id === b.cat) && !b.kind && !b.locked) cov[b.cat] = (cov[b.cat] || 0) + e - s; });
+  const by = o => Object.keys(o).sort((a, b) => o[b] - o[a]);
+  const pickId = by(cov).find(noGoal) || by(movable).find(id => noGoal(id) && movable[id] >= 30) || by(cov)[0] || by(movable)[0];
+  return pickId ? catById(pickId) : (pool[0] || null);
+}
+const titleOf = id => { const n = {}; S.blocks.filter(b => b.cat === id && !b.kind).forEach(b => n[b.title] = (n[b.title] || 0) + 1);
+  return Object.keys(n).sort((a, b) => n[b] - n[a])[0] || catById(id).name; };
+// work out a change and how the week makes up for it. mode: {kind:'from', cat} | {kind:'pool'} | {kind:'none'}
+function planChange(c, mode){
+  const d = parseYmd(c.date), mon = mondayOf(d), g = c.group, work = S.changes.filter(x => x.group !== g);
+  const before = {}; S.cats.forEach(x => before[x.id] = weekMins(x.id, d, work));
+  // what the change covers
+  const lost = {}, covered = [];
+  plannedOn(d, work).forEach(b => { const s = Math.max(toMin(b.start), toMin(c.start)), e = Math.min(toMin(b.start) + dur(b), toMin(c.start) + dur(c));
+    if(e - s >= 5 && b.cat !== c.cat){ lost[b.cat] = (lost[b.cat] || 0) + e - s; covered.push({title:b.title, cat:b.cat, s, e, locked:b.locked || catById(b.cat).must}); } });
+  work.push(c);
+  const after = id => weekMins(id, d, work);
+  const moves = [], short = [];
+  // later this week: after the change on its own day (and after now, if that's today), then the days after it
+  const nowCut = ymd(d) === todayStr() ? nowMin() : 0;
+  function take(fromIds, amount, to){
+    let left = amount;
+    while(left >= 30){
+      const cand = [];
+      for(let i = dow(d); i < 7; i++){
+        const day = addDays(mon, i), k = ymd(day), floor = k === c.date ? Math.max(toMin(c.start) + dur(c), nowCut) : (k === todayStr() ? nowMin() : 0);
+        if(k < todayStr()) continue;
+        plannedOn(day, work).forEach(b => {
+          if(!fromIds.includes(b.cat) || b.kind || b.locked || catById(b.cat).must || (b.isChange && b.src !== 'makeup')) return;
+          const s = Math.max(toMin(b.start), floor), e = toMin(b.start) + dur(b);
+          if(e - s >= 15) cand.push({day, k, s, e, from:b.cat});
+        });
+      }
+      // the biggest block first; on a tie, the latest one, so time comes off the end of the evening
+      const x = cand.sort((a, b) => (b.e - b.s) - (a.e - a.s) || b.k.localeCompare(a.k) || b.e - a.e)[0];
+      if(!x) break;
+      const len = x.e - x.s; let amt = Math.min(left, len, 60); if(len - amt < 15) amt = len;
+      const m = {id:uid(), group:g, src:'makeup', from:x.from, date:x.k, start:hhmm(x.e - amt), end:hhmm(x.e % 1440), title:titleOf(to), cat:to, note:'Balances ' + (c.title || 'a change') + ' on ' + DOW3[dow(d)], locked:false};
+      work.push(m); moves.push(m); left -= amt;
+    }
+    return amount - Math.max(0, left);
+  }
+  const goalCats = Object.keys(lost).map(catById).filter(x => !x.must && x.target > 0 && x.id !== c.cat);
+  const need = x => { const n = Math.min(lost[x.id], x.target * 60 - after(x.id)); return n >= 30 ? Math.round(n / 15) * 15 : 0; };
+  if(mode.kind === 'from'){
+    goalCats.filter(x => x.id !== mode.cat).forEach(x => { const n = need(x); if(n){ const got = take([mode.cat], n, x.id); if(got < n) short.push({cat:x, m:n - got}); } });
+  } else if(mode.kind === 'pool'){
+    // keep the new category at its weekly goal: shorten its later blocks this week, and use that time
+    // first for goals the change pushed out, then as spare time
+    const X = catById(c.cat); let extra = X.target > 0 ? Math.round((after(X.id) - X.target * 60) / 15) * 15 : dur(c);
+    goalCats.forEach(x => { const n = need(x); if(n && extra >= 30){ const got = take([X.id], Math.min(n, extra), x.id); extra -= got; if(got < n) short.push({cat:x, m:n - got}); } else if(n) short.push({cat:x, m:n}); });
+    if(extra >= 30){ const sp = spareCat(d, X.id, c); if(sp) take([X.id], extra, sp.id); }
+  }
+  const afterAll = {}; S.cats.forEach(x => afterAll[x.id] = after(x.id));
+  // join make-up blocks that sit back to back on the same day
+  moves.sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start));
+  for(let i = 1; i < moves.length; i++){ const a = moves[i - 1], b = moves[i];
+    if(a.date === b.date && a.cat === b.cat && a.from === b.from && toMin(a.start) + dur(a) === toMin(b.start)){ a.end = b.end; moves.splice(i, 1); i--; } }
+  return {change:c, moves, short, covered, before, after:afterAll};
+}
+
 
 /* ---- lifting rotation: lifts alternate Workout A and B in the order they happen, week after week,
    even when some weeks have fewer lifts (an every-other-week lift) ---- */
@@ -676,30 +771,31 @@ function wireChores(el, d){ el.querySelectorAll('[data-chore]').forEach(i => i.o
 
 /* ================================================================ Today */
 const nowMin = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
+const changeTag = b => b.isChange ? (b.src === 'makeup' ? '<span class="pill warn">Adjusted this week</span>' : '<span class="pill good">Changed for this day</span>') : (b.cut ? '<span class="pill warn">Shortened this day</span>' : '');
 function blockRow(b, d, opts){
   const s = toMin(b.start), e = s + dur(b), n = nowMin(), isToday = ymd(d) === todayStr();
   const done = isDone(d, b.id), now = isToday && n >= s && n < e, past = isToday && n >= e;
   const c = catById(b.cat);
-  if(opts && opts.edit) return `<div class="blk edit${opts.clash ? ' clash' : ''}" style="--c:${esc(c.color)}" data-edit="${b.id}" role="button" tabindex="0">
+  if(opts && opts.edit) return `<div class="blk edit${opts.clash ? ' clash' : ''}" style="--c:${esc(c.color)}" ${b.isChange ? `data-chg="${b.group}"` : `data-edit="${b.id}"`} role="button" tabindex="0">
     <div class="tm">${fmtT(s)}<span>${fmtT(e)}</span></div>
-    <div><div class="tt">${blockTitle(b, d)}</div><div class="meta">${chip(b.cat)}<span class="note">${fmtDur(dur(b))}${b.locked || catById(b.cat).must ? ' · 🔒' : ''}</span>${b.every > 1 ? '<span class="pill warn">Every other week</span>' : ''}${opts.clash ? '<span class="pill warn">Overlaps</span>' : ''}</div>${b.note ? `<div class="bn">${esc(b.note)}</div>` : ''}</div>
+    <div><div class="tt">${blockTitle(b, d)}</div><div class="meta">${chip(b.cat)}<span class="note">${fmtDur(dur(b))}${b.locked || catById(b.cat).must ? ' · 🔒' : ''}</span>${b.every > 1 && !b.isChange ? '<span class="pill warn">Every other week</span>' : ''}${changeTag(b)}${opts.clash ? '<span class="pill warn">Overlaps</span>' : ''}</div>${b.note ? `<div class="bn">${esc(b.note)}</div>` : ''}</div>
     <span class="iconbtn" aria-hidden="true">✎</span></div>`;
   return `<div class="blk${done ? ' done' : ''}${now ? ' now' : ''}${past ? ' past' : ''}" style="--c:${esc(c.color)}">
     <input type="checkbox" data-done="${b.id}" ${done ? 'checked' : ''} aria-label="Done: ${esc(b.title)}">
     <div class="tm">${fmtT(s)}<span>${fmtT(e)}</span></div>
-    <div><div class="tt">${blockTitle(b, d)}</div><div class="meta">${chip(b.cat)}${now ? '<span class="nowtag">Now</span>' : ''}</div>${b.note ? `<div class="bn">${esc(b.note)}</div>` : ''}</div></div>`;
+    <div><div class="tt">${blockTitle(b, d)}</div><div class="meta">${chip(b.cat)}${changeTag(b)}${now ? '<span class="nowtag">Now</span>' : ''}</div>${b.note ? `<div class="bn">${esc(b.note)}</div>` : ''}</div></div>`;
 }
 function weekStats(){
   const mon = mondayOf(today()); let fit = 0, fitDone = 0, all = 0, allDone = 0;
   for(let i = 0; i < 7; i++){ const d = addDays(mon, i);
-    blocksOn(d).forEach(b => { if(b.cat === 'work' || b.cat === 'routine' || b.cat === 'meals') return; all++; if(isDone(d, b.id)) allDone++;
+    plannedOn(d).forEach(b => { if(b.cat === 'work' || b.cat === 'routine' || b.cat === 'meals') return; all++; if(isDone(d, b.id)) allDone++;
       if(b.kind === 'lift' || b.kind === 'run'){ fit++; if(isDone(d, b.id)) fitDone++; } }); }
   return {fit, fitDone, all, allDone};
 }
 function renderToday(){
   const el = $('v-today');
   if(!S.setup){ el.innerHTML = welcome(); wireWelcome(el); return; }
-  const d = today(), bl = blocksOn(d), n = nowMin();
+  const d = today(), bl = plannedOn(d), n = nowMin();
   const cur = bl.find(b => n >= toMin(b.start) && n < toMin(b.start) + dur(b)), next = bl.find(b => toMin(b.start) > n);
   let nowHtml;
   if(cur){
@@ -714,7 +810,7 @@ function renderToday(){
   const doneToday = bl.filter(b => isDone(d, b.id)).length;
   el.innerHTML = `
     <div class="card nowcard"><h2 style="margin-bottom:6px">${DOW[dow(d)]}, ${short(d)}</h2>${nowHtml}</div>
-    <div class="card"><h2>Today’s plan</h2><p class="hint">Tick each block as you do it. Change the plan on the Week tab.</p>
+    <div class="card"><div class="wohead"><h2>Today’s plan</h2><button class="btn sm" id="chgToday">Change today…</button></div><p class="hint">Tick each block as you do it. Plans changed? Use <b>Change today</b>; your regular week stays as it is.</p>
       ${bl.length ? `<div class="plan">${bl.map(b => blockRow(b, d)).join('')}</div>` : '<p class="empty">Nothing planned for today.</p>'}
       <div class="tiles"><div class="tile"><span class="big">${doneToday}/${bl.length}</span><span class="lbl">blocks done today</span></div>
       <div class="tile"><span class="big">${ws.fitDone}/${ws.fit}</span><span class="lbl">workouts this week</span></div>
@@ -724,6 +820,7 @@ function renderToday(){
   el.querySelectorAll('[data-done]').forEach(i => i.onchange = () => { setDone(d, i.dataset.done, i.checked); renderToday(); });
   wireChores(el, d);
   const ts = $('toSet'); if(ts) ts.onclick = () => go('settings');
+  $('chgToday').onclick = () => editChange(null, d);
 }
 function welcome(){
   return `<div class="card welcome"><h2>Welcome to A Better Life Tracker</h2>
@@ -740,23 +837,26 @@ function wireWelcome(el){
 
 /* ================================================================ Week */
 function renderWeek(){
-  const el = $('v-week'), mon = addDays(mondayOf(today()), 7 * weekOff), d = addDays(mon, weekDay), bl = blocksOn(d);
+  const el = $('v-week'), mon = addDays(mondayOf(today()), 7 * weekOff), d = addDays(mon, weekDay), bl = plannedOn(d);
   const alt = S.blocks.some(b => b.every > 1);
   const td = dow(today());
   let lastEnd = -1;
   const rows = bl.map(b => { const s = toMin(b.start), clash = s < lastEnd; lastEnd = Math.max(lastEnd, s + dur(b)); return blockRow(b, d, {edit:true, clash}); }).join('');
   const hrs = bl.reduce((t, b) => t + dur(b), 0) / 60, ch = choresOn(d);
   el.innerHTML = `
-    <div class="card"><h2>Your week</h2><p class="hint">Pick a day, then tap a block to change it. Blocks repeat every week, or every other week; ticks on the Today tab are kept per date.</p>
+    <div class="card"><h2>Your week</h2><p class="hint">Pick a day, then tap a block to change it for every week. To change just one date, use <b>Change this day</b>.</p>
       <div class="seg" style="margin-bottom:10px" role="group" aria-label="Which week"><button type="button" data-woff="0" aria-pressed="${weekOff === 0}">This week</button><button type="button" data-woff="1" aria-pressed="${weekOff === 1}">Next week</button></div>${alt ? '<div class="note" style="margin:-4px 0 10px">Some blocks are every other week, so the two weeks differ.</div>' : ''}
       <div class="days">${DOW3.map((x, i) => `<button type="button" data-day="${i}" aria-pressed="${i === weekDay}" class="${i === td && !weekOff ? 'today' : ''}">${x}<small>${addDays(mon, i).getDate()}</small></button>`).join('')}</div>
       <div class="row" style="justify-content:space-between;margin-bottom:10px"><b>${DOW[weekDay]} ${short(d)} <span class="muted small">· ${fmtH(hrs)} planned</span></b>
-        <span class="row"><button class="btn sm pri" id="addBlk">+ Add block</button><button class="btn sm" id="copyDay">Copy day…</button></span></div>
+        <span class="row"><button class="btn sm pri" id="addBlk">+ Add block</button><button class="btn sm" id="copyDay">Copy day…</button>${ymd(d) >= todayStr() ? '<button class="btn sm" id="chgDay">Change this day…</button>' : ''}</span></div>
       ${bl.length ? `<div class="plan">${rows}</div>` : '<p class="empty">Nothing planned for this day yet.</p>'}</div>
     <div class="card"><div class="wohead"><h2>Chores on ${DOW[weekDay]}, ${short(d)}</h2><button class="btn sm" id="wkChore">+ Add chore</button></div>
       ${ch.length ? ch.map(c => choreRow(c, d)).join('') : `<p class="empty">${S.chores.length ? 'No chores due that day.' : 'No chores yet. Add one here, or import a calendar file (.ics) in Settings.'}</p>`}</div>`;
   el.querySelectorAll('[data-day]').forEach(b => b.onclick = () => { weekDay = +b.dataset.day; renderWeek(); });
   el.querySelectorAll('[data-woff]').forEach(b => b.onclick = () => { weekOff = +b.dataset.woff; renderWeek(); });
+  el.querySelectorAll('[data-chg]').forEach(r => { r.onclick = () => editChange(r.dataset.chg, d);
+    r.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); r.onclick(); } }; });
+  if($('chgDay')) $('chgDay').onclick = () => editChange(null, d);
   el.querySelectorAll('[data-edit]').forEach(r => { r.onclick = () => editBlock(S.blocks.find(b => b.id === r.dataset.edit));
     r.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); r.onclick(); } }; });
   $('addBlk').onclick = () => editBlock(null);
@@ -816,6 +916,69 @@ function editBlock(b){
     save(); closeModal(); renderWeek(); toast(isNew ? 'Added' : 'Saved');
   };
 }
+function editChange(groupId, onDate){
+  const old = groupId ? S.changes.find(c => c.group === groupId && c.src !== 'makeup') : null;
+  const x = old || {date:ymd(onDate || today()), start:'', end:'', title:'', cat:(S.cats.find(c => c.id === 'social') || S.cats[0]).id, note:''};
+  const pick = old && old.mode ? old.mode : null;
+  const opts = () => {
+    const X = catById($('xCat').value), d = parseYmd($('xDate').value || x.date), sp = spareCat(d, X.id, {date:$('xDate').value, start:$('xStart').value, end:$('xEnd').value});
+    const list = S.cats.filter(c => !c.must && c.id !== X.id);
+    const o = list.map(c => [`from:${c.id}`, `Take it from ${c.name}`]);
+    if(!X.must) o.splice(0, 0, ['pool', `Use ${X.name} time later this week`]);
+    o.push(['none', 'Don’t change anything else']);
+    const cur = $('xMode').value, keep = $('xMode').dataset.touched && o.some(([v]) => v === cur) ? cur : null;
+    const def = keep || (pick && o.some(([v]) => v === pick) ? pick : sp ? `from:${sp.id}` : o[0][0]);
+    $('xMode').innerHTML = o.map(([v, t]) => `<option value="${esc(v)}" ${v === def ? 'selected' : ''}>${esc(t)}</option>`).join('');
+  };
+  openModal(`<h2>${old ? 'This day’s change' : 'Change a day'}</h2>
+    <p class="hint" style="margin:0">For one date only, like plans with friends. What it covers is skipped that day, and your regular week stays as it is.</p>
+    <div class="two"><label class="f">Date<input type="date" id="xDate" value="${esc(x.date)}" min="${todayStr()}"></label>
+      <label class="f">Category<select id="xCat">${S.cats.map(c => `<option value="${c.id}" ${c.id === x.cat ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select></label></div>
+    <div class="two"><label class="f">Starts<input type="time" id="xStart" value="${esc(x.start)}"></label><label class="f">Ends<input type="time" id="xEnd" value="${esc(x.end)}"></label></div>
+    <label class="f">What<input type="text" id="xTitle" value="${esc(x.title)}" placeholder="e.g. Out with friends" maxlength="120"></label>
+    <label class="f">Balance the week<select id="xMode"></select></label>
+    <div id="xPrev" class="small"></div>
+    <p class="err" id="xErr"></p>
+    <div class="acts">${old ? '<button class="btn danger grow" id="xDel">Undo this change</button>' : ''}<button class="btn" id="xCancel">Cancel</button><button class="btn pri" id="xSave">Save</button></div>`);
+  let plan = null;
+  const read = () => { const s = $('xStart').value, e = $('xEnd').value, d = $('xDate').value, m = $('xMode').value;
+    return {c:{id:old ? old.id : uid(), group:old ? old.group : uid(), src:'change', date:d, start:s, end:e, title:$('xTitle').value.trim() || catById($('xCat').value).name, cat:$('xCat').value, note:'', locked:true, mode:m},
+      mode:m === 'pool' ? {kind:'pool'} : m === 'none' ? {kind:'none'} : {kind:'from', cat:m.slice(5)}}; };
+  const preview = () => {
+    const {c, mode} = read(); $('xErr').textContent = ''; plan = null;
+    if(!c.date || !c.start || !c.end){ $('xPrev').innerHTML = '<p class="note" style="margin:0">Pick a date and times to see how your week changes.</p>'; return; }
+    if(c.date < todayStr()){ $('xPrev').innerHTML = ''; $('xErr').textContent = 'Pick today or a later date.'; return; }
+    if(c.start === c.end){ $('xPrev').innerHTML = ''; return; }
+    const clash = S.changes.filter(o => o.group !== c.group && o.date === c.date).some(o => toMin(o.start) < toMin(c.start) + dur(c) && toMin(c.start) < toMin(o.start) + dur(o));
+    if(clash){ $('xPrev').innerHTML = ''; $('xErr').textContent = 'That overlaps another change on this day. Undo that one first, or pick other times.'; return; }
+    plan = planChange(c, mode);
+    const d = parseYmd(c.date), cov = plan.covered.map(v => `<div>${fmtT(v.s)}–${fmtT(v.e)} · ${esc(v.title)} ${chip(v.cat)}${catById(v.cat).must ? ' <span class="muted">(must-do, skipped)</span>' : ''}</div>`).join('');
+    const mv = plan.moves.map(m => `<div>${DOW3[dow(parseYmd(m.date))]} ${fmtT(toMin(m.start))}–${fmtT(toMin(m.start) + dur(m))}: ${chip(m.from)} → ${chip(m.cat)}</div>`).join('');
+    const ids = [...new Set([c.cat].concat(Object.keys(plan.before).filter(id => plan.before[id] !== plan.after[id])))];
+    const tot = ids.map(id => { const k = catById(id), a = plan.after[id] / 60, t = k.target || 0;
+      return `<div class="row" style="justify-content:space-between"><span>${esc(k.name)}</span><span class="muted">${fmtH(plan.before[id] / 60)} → <b style="color:var(--ink)">${fmtH(a)}</b>${t ? ' · goal ' + fmtH(t) + (a > t + 0.5 ? ' <span class="pill warn">over</span>' : a < t - 0.5 ? ' <span class="pill warn">short</span>' : '') : ''}</span></div>`; }).join('');
+    $('xPrev').innerHTML = `<div style="border-top:1px solid var(--line);padding-top:8px;display:flex;flex-direction:column;gap:6px">
+      <div><b>Skipped that day</b>${cov || '<div class="muted">Nothing: that time was open.</div>'}</div>
+      ${mode.kind === 'none' ? '' : `<div><b>Adjusted later this week</b>${mv || '<div class="muted">Nothing else needs to change.</div>'}</div>`}
+      ${plan.short.length ? `<p class="err" style="margin:0">Can’t make up ${plan.short.map(v => fmtDur(v.m) + ' of ' + esc(v.cat.name)).join(', ')} this week: not enough of that time left.</p>` : ''}
+      <div><b>This week (${esc(short(mondayOf(d)))}–${esc(short(addDays(mondayOf(d), 6)))})</b>${tot}</div></div>`;
+  };
+  opts(); preview();
+  $('xMode').addEventListener('change', () => { $('xMode').dataset.touched = '1'; preview(); });
+  ['xCat', 'xDate', 'xStart', 'xEnd'].forEach(id => $(id).addEventListener('change', () => { opts(); preview(); }));
+  $('xCancel').onclick = closeModal;
+  if(old) $('xDel').onclick = async () => { if(!await ask('Undo this change and its adjustments? ' + DOW[dow(parseYmd(old.date))] + ' goes back to your regular plan.', 'Undo change', true)) return;
+    S.changes = S.changes.filter(c => c.group !== old.group); save(); closeModal(); render(); toast('Back to your regular plan'); };
+  $('xSave').onclick = () => {
+    preview();
+    const {c} = read();
+    if(!c.date || !c.start || !c.end) return void ($('xErr').textContent = 'Set a date, a start and an end time.');
+    if(c.start === c.end) return void ($('xErr').textContent = 'The end has to be later than the start.');
+    if(!plan) return;
+    S.changes = S.changes.filter(o => o.group !== c.group).concat([plan.change], plan.moves);
+    save(); closeModal(); render(); toast(plan.moves.length ? 'Changed · ' + plan.moves.length + ' block' + (plan.moves.length === 1 ? '' : 's') + ' adjusted this week' : 'Changed for ' + DOW[dow(parseYmd(c.date))]);
+  };
+}
 function copyDay(){
   const from = weekDay;
   openModal(`<h2>Copy ${DOW[from]}</h2><p class="hint" style="margin:0">Copies every block on ${DOW[from]} to the days you pick. Those days’ own blocks are replaced.</p>
@@ -843,7 +1006,7 @@ function renderMonth(){
   const weeks = Math.ceil((dow(first) + last.getDate()) / 7), tdS = todayStr();
   let cells = '', choreN = 0, fitN = 0;
   for(let i = 0; i < weeks * 7; i++){
-    const d = addDays(start, i), k = ymd(d), inM = d.getMonth() === m, bl = blocksOn(d), ch = choresOn(d);
+    const d = addDays(start, i), k = ymd(d), inM = d.getMonth() === m, bl = plannedOn(d), ch = choresOn(d);
     if(inM){ choreN += ch.length; fitN += bl.filter(b => b.kind === 'lift' || b.kind === 'run').length; }
     // the day's planned hours by category, as one thin bar
     const hrs = {}; let tot = 0;
@@ -877,15 +1040,16 @@ function renderMonth(){
   el.querySelectorAll('[data-mday]').forEach(b => b.onclick = () => openDay(parseYmd(b.dataset.mday)));
 }
 function openDay(d){
-  const bl = blocksOn(d), ch = choresOn(d);
+  const bl = plannedOn(d), ch = choresOn(d);
   openModal(`<h2>${DOW[dow(d)]}, ${esc(longD(d))}</h2>
     ${bl.length ? `<div class="plan">${bl.map(b => blockRow(b, d)).join('')}</div>` : '<p class="empty">Nothing planned this day.</p>'}
     <div><b>Chores</b>${ch.length ? ch.map(c => choreRow(c, d)).join('') : '<p class="empty" style="margin:4px 0 0">No chores due.</p>'}</div>
-    <div class="acts"><button class="btn grow" id="dWeek">Edit ${DOW[dow(d)]} on the Week tab</button><button class="btn pri" id="dClose">Close</button></div>`);
+    <div class="acts"><button class="btn grow" id="dWeek">Edit ${DOW[dow(d)]} on the Week tab</button>${ymd(d) >= todayStr() ? '<button class="btn" id="dChg">Change this day…</button>' : ''}<button class="btn pri" id="dClose">Close</button></div>`);
   const box = $('mbox');
   box.querySelectorAll('[data-done]').forEach(i => i.onchange = () => { setDone(d, i.dataset.done, i.checked); openDay(d); renderMonth(); });
   box.querySelectorAll('[data-chore]').forEach(i => i.onchange = () => { setChoreDone(d, i.dataset.chore, i.checked); openDay(d); renderMonth(); });
   $('dClose').onclick = closeModal;
+  if($('dChg')) $('dChg').onclick = () => editChange(null, d);
   $('dWeek').onclick = () => { closeModal(); weekDay = dow(d); go('week'); };
 }
 
@@ -909,6 +1073,7 @@ function renderBalance(){
   el.innerHTML = `
     <div class="card"><h2>Fit my week to my goals</h2><p class="hint">Moves time between your blocks so every goal gets its hours. Must-do categories (🔒 work, meals, chores…), locked blocks, every-other-week blocks and workouts never change. You see every change before it’s made.</p>
       <div class="row"><button class="btn pri" id="fitBtn">Fit my week</button>${S.prevBlocks ? '<button class="btn" id="fitUndo">Undo last fit</button>' : ''}</div></div>
+    ${weekChangesCard()}
     <div class="card"><h2>Hours per week</h2><p class="hint">The pale bar is what your week plans (every-other-week blocks count half), the solid bar is what you’ve ticked off this week so far, and the line is your goal. Set goals in Settings.</p>
       ${goalCats.length ? bars(goalCats) : '<p class="empty">No goals yet. Give a category a weekly goal in Settings.</p>'}</div>
     ${other.length ? `<div class="card"><h2>Everything else</h2>${bars(other)}</div>` : ''}
@@ -918,7 +1083,16 @@ function renderBalance(){
       <div class="tile"><span class="big">${fmtH(sleepH / 7)}</span><span class="lbl">sleep a night, from your first and last blocks</span></div></div></div>`;
   wireBalance();
 }
+function weekChangesCard(){
+  const mon = ymd(mondayOf(today())), sun = ymd(addDays(mondayOf(today()), 13));
+  const mains = S.changes.filter(c => c.src !== 'makeup' && c.date >= todayStr() && c.date <= sun).sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start));
+  if(!mains.length) return '';
+  return `<div class="card"><h2>Changes coming up</h2><p class="hint">One-day changes and the adjustments that balance their week. After that, your regular plan comes back.</p>
+    ${mains.map(c => { const n = S.changes.filter(m => m.group === c.group && m.src === 'makeup').length;
+      return `<div class="chore"><button type="button" class="ct choreedit" data-chgl="${c.group}" data-chgd="${c.date}">${esc(c.title)}<small>${DOW3[dow(parseYmd(c.date))]} ${esc(short(parseYmd(c.date)))} · ${fmtT(toMin(c.start))}–${fmtT(toMin(c.start) + dur(c))} · ${esc(catById(c.cat).name)}${n ? ' · ' + n + ' adjusted block' + (n === 1 ? '' : 's') : ''}</small></button></div>`; }).join('')}</div>`;
+}
 function wireBalance(){
+  document.querySelectorAll('[data-chgl]').forEach(b => b.onclick = () => editChange(b.dataset.chgl, parseYmd(b.dataset.chgd)));
   $('fitBtn').onclick = () => offerFit(null);
   if($('fitUndo')) $('fitUndo').onclick = async () => { if(!await ask('Put your week back the way it was before the last fit?', 'Undo')) return; S.blocks = S.prevBlocks; delete S.prevBlocks; save(); renderBalance(); toast('Back to how it was'); };
 }
