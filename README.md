@@ -6,7 +6,7 @@
 
 **Weekly Schedule & Balance: plan your week in time blocks, tick them off each day, and see whether your hours match your goals**
 
-![Version](https://img.shields.io/badge/version-2026--11--20%20mk1-1F6B62)
+![Version](https://img.shields.io/badge/version-2026--11--21-1F6B62)
 ![Single file](https://img.shields.io/badge/single%20file-HTML-E0823A)
 ![No account needed](https://img.shields.io/badge/no%20sign--up-required-334155)
 ![PageVault ready](https://img.shields.io/badge/PageVault-ready-2563eb)
@@ -95,7 +95,7 @@ Moving between the two: back up on one side and **Restore from backup** on the o
 
 ## Versioning
 
-Only the newest release is kept in the repo: `A-Better-Life-Tracker-2026-11-20-mk1.html`. Each new release replaces it, and `docs/index.html` (what the web link opens) is updated to match. Your data isn't stored in the file, so moving to a new release keeps it.
+Only the newest release is kept in the repo: `A-Better-Life-Tracker-2026-11-21.html`. Each new release replaces it, and `docs/index.html` (what the web link opens) is updated to match. Your data isn't stored in the file, so moving to a new release keeps it.
 
 Releases are named with their date. The first release of a day is just the date; later releases that same day add `mk1`, `mk2`, `mk3`… (the count starts over each day). The version is also shown inside the app.
 
@@ -105,6 +105,7 @@ Every release so far, newest first. Older releases are listed for reference; onl
 
 | Version | Notes |
 |---|---|
+| **2026-11-21** | **Changes that stack cleanly.** A second change in the same week no longer leaves two blocks on top of each other: a later adjustment now takes its time out of an earlier one. Make-up time goes next to a block of the same activity when it can, so it reads as one longer block (a longer evening with friends) instead of a separate slot. Spare time from a change never pushes another category past its goal. |
 | **2026-11-20 mk1** | **Keep when plans change.** A new setting under Settings → Categories. When a one-day change covers a kept activity (study, a run…), it moves to the nearest open time that same day, borrowing free time or other flexible time, and to later that week if the day is full, so it's never just skipped. The preview shows where it went; Today, Week and Month mark it **Moved for this day**. Lifts at a gym stay put. |
 | **2026-11-20** | **Change a day.** One-day changes over your regular plan, from the Today, Week or Month tab, with three ways to balance the week (take the time from a category you pick, use the same category's time later that week, or change nothing else), a preview of every adjustment and the week's new totals, and **Undo**. Today, Week, Month and the day panel show changed, shortened and adjusted blocks; the Balance tab lists upcoming changes. Adjustments only ever borrow flexible time: never must-dos, locked blocks or workouts. The sample week no longer has two overlapping blocks on Friday night. |
 | **2026-11-19 mk5** | **Every-other-week blocks.** A block can now repeat every other week, set in its edit panel. The Week tab has **This week** and **Next week** so you can see and edit both, and Today, Month, Balance (counted as half a week), Workouts and the calendar export all follow it. Workout A and B keep alternating in order even when some weeks have fewer lifts. |

@@ -222,7 +222,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-20 mk1 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-21 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -234,7 +234,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-20 mk1</span></div>
+      <span class="ver" id="appVer">2026-11-21</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -333,7 +333,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-20 mk1', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-21', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -474,15 +474,19 @@ function plannedOn(d, list){
   const base = blocksOn(d), ch = changesOn(d, list);
   if(!ch.length) return base;
   const out = [];
-  base.forEach(b => {
+  // an adjustment replaces only the time it borrowed (c.from); a change replaces everything under it
+  const cuts = (c, cat) => !(c.src === 'makeup' && c.from && (Array.isArray(c.from) ? !c.from.includes(cat) : c.from !== cat));
+  const carve = (b, by, keep) => {
     const s0 = toMin(b.start), e0 = s0 + dur(b);
     let segs = [[s0, e0]];
-    // an adjustment replaces only the time it borrowed (c.from); a change replaces everything under it
-    ch.forEach(c => { if(c.src === 'makeup' && c.from && (Array.isArray(c.from) ? !c.from.includes(b.cat) : c.from !== b.cat)) return; const cs = toMin(c.start), ce = cs + dur(c);
+    by.forEach(c => { if(!cuts(c, b.cat)) return; const cs = toMin(c.start), ce = cs + dur(c);
       segs = segs.flatMap(([s, e]) => e <= cs || s >= ce ? [[s, e]] : [].concat(s < cs ? [[s, cs]] : [], e > ce ? [[ce, e]] : [])); });
-    segs.forEach(([s, e]) => { if(e - s < 5) return; out.push(s === s0 && e === e0 ? b : {...b, start:hhmm(s), end:hhmm(e % 1440), cut:true}); });
-  });
-  ch.forEach(c => out.push({...c, kind:'', isChange:true}));
+    segs.forEach(([s, e]) => { if(e - s < 5) return; out.push(s === s0 && e === e0 ? keep(b) : keep({...b, start:hhmm(s), end:hhmm(e % 1440), cut:true})); });
+  };
+  base.forEach(b => carve(b, ch, x => x));
+  // changes stack in the order they were made: a later change, or a later adjustment that borrows from
+  // an earlier adjustment's category, takes that time from it (a day change itself is never cut)
+  ch.forEach((c, i) => c.src === 'makeup' ? carve(c, ch.slice(i + 1), x => ({...x, kind:'', isChange:true})) : out.push({...c, kind:'', isChange:true}));
   return out.sort((a, b) => toMin(a.start) - toMin(b.start) || toMin(a.end) - toMin(b.end));
 }
 // minutes of a category in the week that holds date d, with the given changes
@@ -524,17 +528,23 @@ function planChange(c, mode){
       for(let i = dow(d); i < 7; i++){
         const day = addDays(mon, i), k = ymd(day), floor = k === c.date ? Math.max(toMin(c.start) + dur(c), nowCut) : (k === todayStr() ? nowMin() : 0);
         if(k < todayStr()) continue;
-        plannedOn(day, work).forEach(b => {
+        const pl = plannedOn(day, work);
+        pl.forEach(b => {
           if(!fromIds.includes(b.cat) || b.kind || b.locked || catById(b.cat).must || (b.isChange && b.src !== 'makeup')) return;
           const s = Math.max(toMin(b.start), floor), e = toMin(b.start) + dur(b);
-          if(e - s >= 15) cand.push({day, k, s, e, from:b.cat});
+          if(e - s < 15) return;
+          // time right next to a block of the same activity extends that block (a longer evening with friends)
+          const before = pl.find(y => y.cat === to && toMin(y.start) + dur(y) === s), after = pl.find(y => y.cat === to && toMin(y.start) === e);
+          cand.push({day, k, s, e, from:b.cat, next:before || after, atStart:!!before});
         });
       }
-      // the biggest block first; on a tie, the latest one, so time comes off the end of the evening
-      const x = cand.sort((a, b) => (b.e - b.s) - (a.e - a.s) || b.k.localeCompare(a.k) || b.e - a.e)[0];
+      // next to the same activity first; then the biggest block; on a tie, the latest one,
+      // so time comes off the end of the evening
+      const x = cand.sort((a, b) => !!b.next - !!a.next || (b.e - b.s) - (a.e - a.s) || b.k.localeCompare(a.k) || b.e - a.e)[0];
       if(!x) break;
-      const len = x.e - x.s; let amt = Math.min(left, len, 60); if(len - amt < 15) amt = len;
-      const m = {id:uid(), group:g, src:'makeup', from:x.from, date:x.k, start:hhmm(x.e - amt), end:hhmm(x.e % 1440), title:titleOf(to), cat:to, note:'Balances ' + (c.title || 'a change') + ' on ' + DOW3[dow(d)], locked:false};
+      const len = x.e - x.s; let amt = Math.min(left, len, x.next ? 240 : 60); if(len - amt < 15) amt = len;
+      const st = x.atStart ? x.s : x.e - amt;
+      const m = {id:uid(), group:g, src:'makeup', from:x.from, date:x.k, start:hhmm(st), end:hhmm((st + amt) % 1440), title:x.next ? x.next.title : titleOf(to), cat:to, note:'Balances ' + (c.title || 'a change') + ' on ' + DOW3[dow(d)], locked:false};
       work.push(m); moves.push(m); left -= amt;
     }
     return amount - Math.max(0, left);
@@ -578,7 +588,9 @@ function planChange(c, mode){
     // first for goals the change pushed out, then as spare time
     const X = catById(c.cat); let extra = X.target > 0 ? Math.round((after(X.id) - X.target * 60) / 15) * 15 : dur(c);
     goalCats.forEach(x => { const n = need(x); if(n && extra >= 30){ const got = take([X.id], Math.min(n, extra), x.id); extra -= got; if(got < n) short.push({cat:x, m:n - got}); } else if(n) short.push({cat:x, m:n}); });
-    if(extra >= 30){ const sp = spareCat(d, X.id, c); if(sp) take([X.id], extra, sp.id); }
+    // spare time never pushes another goal past its goal; with nowhere to put it, it stays where it is
+    if(extra >= 30){ const sp = spareCat(d, X.id, c);
+      if(sp){ const room = sp.target > 0 ? Math.floor((sp.target * 60 - after(sp.id)) / 15) * 15 : extra, amt = Math.min(extra, room); if(amt >= 30) take([X.id], amt, sp.id); } }
   }
   const afterAll = {}; S.cats.forEach(x => afterAll[x.id] = after(x.id));
   // join make-up blocks that sit back to back on the same day
