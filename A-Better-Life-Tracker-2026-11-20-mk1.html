@@ -222,7 +222,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-20 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-20 mk1 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -234,7 +234,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-20</span></div>
+      <span class="ver" id="appVer">2026-11-20 mk1</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -333,7 +333,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-20', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-20 mk1', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -478,7 +478,7 @@ function plannedOn(d, list){
     const s0 = toMin(b.start), e0 = s0 + dur(b);
     let segs = [[s0, e0]];
     // an adjustment replaces only the time it borrowed (c.from); a change replaces everything under it
-    ch.forEach(c => { if(c.src === 'makeup' && c.from && c.from !== b.cat) return; const cs = toMin(c.start), ce = cs + dur(c);
+    ch.forEach(c => { if(c.src === 'makeup' && c.from && (Array.isArray(c.from) ? !c.from.includes(b.cat) : c.from !== b.cat)) return; const cs = toMin(c.start), ce = cs + dur(c);
       segs = segs.flatMap(([s, e]) => e <= cs || s >= ce ? [[s, e]] : [].concat(s < cs ? [[s, cs]] : [], e > ce ? [[ce, e]] : [])); });
     segs.forEach(([s, e]) => { if(e - s < 5) return; out.push(s === s0 && e === e0 ? b : {...b, start:hhmm(s), end:hhmm(e % 1440), cut:true}); });
   });
@@ -511,7 +511,7 @@ function planChange(c, mode){
   // what the change covers
   const lost = {}, covered = [];
   plannedOn(d, work).forEach(b => { const s = Math.max(toMin(b.start), toMin(c.start)), e = Math.min(toMin(b.start) + dur(b), toMin(c.start) + dur(c));
-    if(e - s >= 5 && b.cat !== c.cat){ lost[b.cat] = (lost[b.cat] || 0) + e - s; covered.push({title:b.title, cat:b.cat, s, e, locked:b.locked || catById(b.cat).must}); } });
+    if(e - s >= 5 && b.cat !== c.cat){ lost[b.cat] = (lost[b.cat] || 0) + e - s; covered.push({title:b.title, cat:b.cat, kind:b.kind, s, e, locked:b.locked || catById(b.cat).must}); } });
   work.push(c);
   const after = id => weekMins(id, d, work);
   const moves = [], short = [];
@@ -539,7 +539,37 @@ function planChange(c, mode){
     }
     return amount - Math.max(0, left);
   }
-  const goalCats = Object.keys(lost).map(catById).filter(x => !x.must && x.target > 0 && x.id !== c.cat);
+  // kept activities (Settings → Keep when plans change) move to the nearest open time that same day,
+  // borrowing flexible time; with no room that day, they move to later in the week
+  const keepPref = mode.kind === 'from' ? mode.cat : null;
+  covered.filter(v => catById(v.cat).keep && !catById(v.cat).must && v.kind !== 'lift').forEach(v => {
+    const L = v.e - v.s, bl = plannedOn(d, work);
+    if(!bl.length) return;
+    const dayStart = Math.min(...bl.map(b => toMin(b.start))), dayEnd = Math.max(...bl.map(b => toMin(b.start) + dur(b)));
+    const floor = ymd(d) === todayStr() ? Math.ceil(nowMin() / 5) * 5 : 0;
+    const ok = b => !catById(b.cat).must && !b.locked && !b.kind && !catById(b.cat).keep && b.cat !== c.cat && !(b.isChange && b.src !== 'makeup');
+    // open time: gaps between blocks, plus flexible blocks, joined where they touch
+    const busy = bl.filter(b => !ok(b)).map(b => [toMin(b.start), toMin(b.start) + dur(b)]).sort((a, b) => a[0] - b[0]);
+    const open = []; let t = Math.max(dayStart, floor);
+    busy.forEach(([s0, e0]) => { if(s0 > t) open.push([t, s0]); t = Math.max(t, e0); });
+    if(dayEnd > t) open.push([t, dayEnd]);
+    let best = null;
+    open.forEach(([a, b]) => { if(b - a < L) return; const st = Math.min(Math.max(v.s, a), b - L), dist = Math.abs(st - v.s);
+      // prefer borrowing from the category picked to balance the week
+      const usesPref = keepPref && bl.some(x => x.cat === keepPref && toMin(x.start) < st + L && st < toMin(x.start) + dur(x));
+      const score = dist - (usesPref ? 1 : 0);
+      if(!best || score < best.score) best = {st, score}; });
+    if(best){
+      const st = best.st, en = st + L, from = [...new Set(bl.filter(b => ok(b) && toMin(b.start) < en && st < toMin(b.start) + dur(b)).map(b => b.cat))];
+      const m = {id:uid(), group:g, src:'makeup', moved:true, from, date:c.date, start:hhmm(st), end:hhmm(en % 1440), title:v.title, cat:v.cat, note:'Moved here for ' + (c.title || 'a change'), locked:true};
+      work.push(m); moves.push(m); lost[v.cat] -= L; v.moved = true;
+    } else {
+      const sp = keepPref && keepPref !== v.cat ? catById(keepPref) : spareCat(d, v.cat, c);
+      if(sp){ const got = take([sp.id], L, v.cat); lost[v.cat] -= got; if(got >= L) v.moved = true; else short.push({cat:catById(v.cat), m:L - got}); }
+      else short.push({cat:catById(v.cat), m:L});
+    }
+  });
+  const goalCats = Object.keys(lost).map(catById).filter(x => !x.must && x.target > 0 && x.id !== c.cat && lost[x.id] >= 30);
   const need = x => { const n = Math.min(lost[x.id], x.target * 60 - after(x.id)); return n >= 30 ? Math.round(n / 15) * 15 : 0; };
   if(mode.kind === 'from'){
     goalCats.filter(x => x.id !== mode.cat).forEach(x => { const n = need(x); if(n){ const got = take([mode.cat], n, x.id); if(got < n) short.push({cat:x, m:n - got}); } });
@@ -554,7 +584,7 @@ function planChange(c, mode){
   // join make-up blocks that sit back to back on the same day
   moves.sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start));
   for(let i = 1; i < moves.length; i++){ const a = moves[i - 1], b = moves[i];
-    if(a.date === b.date && a.cat === b.cat && a.from === b.from && toMin(a.start) + dur(a) === toMin(b.start)){ a.end = b.end; moves.splice(i, 1); i--; } }
+    if(a.date === b.date && a.cat === b.cat && !a.moved && !b.moved && a.from === b.from && toMin(a.start) + dur(a) === toMin(b.start)){ a.end = b.end; moves.splice(i, 1); i--; } }
   return {change:c, moves, short, covered, before, after:afterAll};
 }
 
@@ -771,7 +801,7 @@ function wireChores(el, d){ el.querySelectorAll('[data-chore]').forEach(i => i.o
 
 /* ================================================================ Today */
 const nowMin = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
-const changeTag = b => b.isChange ? (b.src === 'makeup' ? '<span class="pill warn">Adjusted this week</span>' : '<span class="pill good">Changed for this day</span>') : (b.cut ? '<span class="pill warn">Shortened this day</span>' : '');
+const changeTag = b => b.isChange ? (b.src === 'makeup' ? (b.moved ? '<span class="pill good">Moved for this day</span>' : '<span class="pill warn">Adjusted this week</span>') : '<span class="pill good">Changed for this day</span>') : (b.cut ? '<span class="pill warn">Shortened this day</span>' : '');
 function blockRow(b, d, opts){
   const s = toMin(b.start), e = s + dur(b), n = nowMin(), isToday = ymd(d) === todayStr();
   const done = isDone(d, b.id), now = isToday && n >= s && n < e, past = isToday && n >= e;
@@ -949,17 +979,17 @@ function editChange(groupId, onDate){
     if(!c.date || !c.start || !c.end){ $('xPrev').innerHTML = '<p class="note" style="margin:0">Pick a date and times to see how your week changes.</p>'; return; }
     if(c.date < todayStr()){ $('xPrev').innerHTML = ''; $('xErr').textContent = 'Pick today or a later date.'; return; }
     if(c.start === c.end){ $('xPrev').innerHTML = ''; return; }
-    const clash = S.changes.filter(o => o.group !== c.group && o.date === c.date).some(o => toMin(o.start) < toMin(c.start) + dur(c) && toMin(c.start) < toMin(o.start) + dur(o));
+    const clash = S.changes.filter(o => o.group !== c.group && o.date === c.date && o.src !== 'makeup').some(o => toMin(o.start) < toMin(c.start) + dur(c) && toMin(c.start) < toMin(o.start) + dur(o));
     if(clash){ $('xPrev').innerHTML = ''; $('xErr').textContent = 'That overlaps another change on this day. Undo that one first, or pick other times.'; return; }
     plan = planChange(c, mode);
-    const d = parseYmd(c.date), cov = plan.covered.map(v => `<div>${fmtT(v.s)}–${fmtT(v.e)} · ${esc(v.title)} ${chip(v.cat)}${catById(v.cat).must ? ' <span class="muted">(must-do, skipped)</span>' : ''}</div>`).join('');
-    const mv = plan.moves.map(m => `<div>${DOW3[dow(parseYmd(m.date))]} ${fmtT(toMin(m.start))}–${fmtT(toMin(m.start) + dur(m))}: ${chip(m.from)} → ${chip(m.cat)}</div>`).join('');
+    const d = parseYmd(c.date), cov = plan.covered.map(v => `<div>${fmtT(v.s)}–${fmtT(v.e)} · ${esc(v.title)} ${chip(v.cat)}${catById(v.cat).must ? ' <span class="muted">(must-do, skipped)</span>' : v.moved ? ' <span class="pill good">kept, moved</span>' : ''}</div>`).join('');
+    const mv = plan.moves.map(m => `<div>${DOW3[dow(parseYmd(m.date))]} ${fmtT(toMin(m.start))}–${fmtT(toMin(m.start) + dur(m))}: ${m.moved ? `<b>${esc(m.title)}</b> moved here ${chip(m.cat)}` : chip(m.from) + ' → ' + chip(m.cat)}</div>`).join('');
     const ids = [...new Set([c.cat].concat(Object.keys(plan.before).filter(id => plan.before[id] !== plan.after[id])))];
     const tot = ids.map(id => { const k = catById(id), a = plan.after[id] / 60, t = k.target || 0;
       return `<div class="row" style="justify-content:space-between"><span>${esc(k.name)}</span><span class="muted">${fmtH(plan.before[id] / 60)} → <b style="color:var(--ink)">${fmtH(a)}</b>${t ? ' · goal ' + fmtH(t) + (a > t + 0.5 ? ' <span class="pill warn">over</span>' : a < t - 0.5 ? ' <span class="pill warn">short</span>' : '') : ''}</span></div>`; }).join('');
     $('xPrev').innerHTML = `<div style="border-top:1px solid var(--line);padding-top:8px;display:flex;flex-direction:column;gap:6px">
       <div><b>Skipped that day</b>${cov || '<div class="muted">Nothing: that time was open.</div>'}</div>
-      ${mode.kind === 'none' ? '' : `<div><b>Adjusted later this week</b>${mv || '<div class="muted">Nothing else needs to change.</div>'}</div>`}
+      ${mode.kind === 'none' ? '' : `<div><b>Moved or adjusted</b>${mv || '<div class="muted">Nothing else needs to change.</div>'}</div>`}
       ${plan.short.length ? `<p class="err" style="margin:0">Can’t make up ${plan.short.map(v => fmtDur(v.m) + ' of ' + esc(v.cat.name)).join(', ')} this week: not enough of that time left.</p>` : ''}
       <div><b>This week (${esc(short(mondayOf(d)))}–${esc(short(addDays(mondayOf(d), 6)))})</b>${tot}</div></div>`;
   };
@@ -1235,7 +1265,10 @@ function renderSettings(){
       <label class="f" style="max-width:240px">Clock<select id="sClock"><option value="12" ${S.clock24 ? '' : 'selected'}>12-hour (5:45 PM)</option><option value="24" ${S.clock24 ? 'selected' : ''}>24-hour (17:45)</option></select></label></div>
     <div class="card"><h2>Categories and weekly goals</h2><p class="hint">Each block belongs to a category. Give a category a goal in hours a week (0 = no goal), and the app offers to fit your week to it. <b>Must-do</b> (🔒) categories, like work, meals and chores, are never changed. Time for a goal comes from categories over their goal, then from categories with no goal (like free time).</p>
       <div id="catList">${S.cats.map(c => `<div class="catrow" data-cat="${c.id}"><input type="color" value="${esc(c.color)}" data-f="color" aria-label="Color"><input type="text" value="${esc(c.name)}" data-f="name" aria-label="Name" maxlength="40"><input type="number" value="${c.target || 0}" min="0" max="168" step="0.5" data-f="target" aria-label="Goal, hours a week" ${c.must ? 'disabled title="Must-do categories have no goal"' : ''}><label class="mustlbl"><input type="checkbox" data-f="must" ${c.must ? 'checked' : ''} aria-label="Must-do">🔒<span>Must-do</span></label><button class="iconbtn" data-delcat="${c.id}" aria-label="Delete ${esc(c.name)}">✕</button></div>`).join('')}</div>
-      <div class="row" style="margin-top:8px"><button class="btn sm" id="addCat">+ Add category</button><span class="note">Columns: color · name · goal (hours a week) · must-do</span></div></div>
+      <div class="row" style="margin-top:8px"><button class="btn sm" id="addCat">+ Add category</button><span class="note">Columns: color · name · goal (hours a week) · must-do</span></div>
+      <h3>Keep when plans change</h3>
+      <p class="hint" style="margin-top:0">When a one-day change covers one of these, it moves to the nearest open time that same day (borrowing free time or other flexible time), or later that week if the day is full. Good for study and workouts. Lifts at a gym stay where they are.</p>
+      <div class="row" style="gap:6px">${S.cats.filter(c => !c.must).map(c => `<label class="mustlbl" style="border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:var(--surface-2)"><input type="checkbox" data-keep="${c.id}" ${c.keep ? 'checked' : ''}>${esc(c.name)}</label>`).join('')}</div></div>
     <div class="card"><h2>Chores</h2><p class="hint">Add chores yourself, or import them from a calendar file (.ics), such as an export from Apple Calendar, Google Calendar or Thunderbird. Repeating chores (every week, every 2 weeks, the 3rd Tuesday…) show up on the right days on the Today, Week and Month tabs. Tap a chore to change it. Importing the same calendar again updates the chores that came from it.</p>
       <div class="row"><button class="btn pri" id="choreAdd">+ Add chore</button><button class="btn" id="icsPick">Import .ics file</button><input type="file" id="icsFile" accept=".ics,text/calendar" hidden>${S.chores.length ? '<button class="btn danger" id="icsClear">Remove all chores</button>' : ''}</div>
       ${icsMsg ? `<p class="saved" style="margin-top:8px">${esc(icsMsg)}</p>` : ''}
@@ -1256,6 +1289,7 @@ function renderSettings(){
     <p class="muted small" style="text-align:center">${APP_NAME} · Version ${APP_VERSION} · by ${APP_BY}</p>`;
   setMsg = ''; icsMsg = '';
   $('sClock').onchange = e => { S.clock24 = e.target.value === '24'; save(); toast('Saved'); };
+  el.querySelectorAll('[data-keep]').forEach(i => i.onchange = () => { const c = S.cats.find(x => x.id === i.dataset.keep); if(c){ c.keep = i.checked; save(); toast(c.name + (c.keep ? ' is kept when plans change' : ' can be skipped when plans change')); } });
   el.querySelectorAll('.catrow input').forEach(i => i.onchange = () => { const c = S.cats.find(x => x.id === i.closest('.catrow').dataset.cat); if(!c) return;
     if(i.dataset.f === 'must'){ c.must = i.checked; if(c.must) c.target = 0; save(); renderSettings(); toast(c.must ? c.name + ' is must-do: fitting never changes it' : 'Saved'); return; }
     if(i.dataset.f === 'target'){ const old = c.target || 0; c.target = Math.max(0, num(i.value)); save(); if(c.target !== old) offerFit(c); return; }
