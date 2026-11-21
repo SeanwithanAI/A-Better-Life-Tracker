@@ -222,7 +222,7 @@
 <body>
 <div id="nojs" style="max-width:560px;width:calc(100% - 32px);box-sizing:border-box;margin:40px auto;padding:22px 24px;border:1px solid #E4E7EC;border-radius:16px;background:#fff;color:#101828;font:15px/1.6 system-ui,-apple-system,sans-serif">
   <h1 style="font-size:24px;font-weight:800;margin:0 0 6px;letter-spacing:-.02em">A Better Life Tracker</h1>
-  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-21 · by SeanwithanAI</p>
+  <p style="margin:0 0 14px;color:#667085;font-weight:600">Weekly Schedule &amp; Balance · Version 2026-11-21 mk1 · by SeanwithanAI</p>
   <p style="margin:8px 0 0">This preview can’t run the app. Previews like the iPhone Files app show web pages without running them, so it stays blank here. To use it:</p>
   <p style="margin:8px 0 0"><b>Easiest, on any device:</b> use it online at <a href="https://seanwithanai.github.io/A-Better-Life-Tracker/">seanwithanai.github.io/A-Better-Life-Tracker</a>. Nothing to install, and your data stays in your browser on your device.</p>
   <p style="margin:8px 0 0"><b>On a computer:</b> double-click the file, or drag it onto Chrome, Edge, Firefox or Safari.</p>
@@ -234,7 +234,7 @@
   <header>
     <div class="brand"><svg class="logo" role="img" aria-label="A Better Life Tracker logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2FA38F"/><stop offset="1" stop-color="#1D6159"/></linearGradient><linearGradient id="hgl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient></defs><rect width="64" height="64" rx="15" fill="url(#hbg)"/><rect width="64" height="64" rx="15" fill="url(#hgl)"/><rect x="11" y="14" width="38" height="38" rx="6" fill="#fff"/><path d="M11 20a6 6 0 0 1 6-6h26a6 6 0 0 1 6 6v3H11z" fill="#E0823A"/><rect x="19" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="37" y="10" width="4" height="8" rx="2" fill="#fff"/><rect x="16" y="28" width="16" height="4.5" rx="2.25" fill="#C8442B"/><rect x="16" y="36" width="24" height="4.5" rx="2.25" fill="#2F7D4F"/><rect x="16" y="44" width="12" height="4.5" rx="2.25" fill="#7A4FC4"/><circle cx="50" cy="48" r="9" fill="#fff"/><circle cx="50" cy="48" r="6.6" fill="#1D6159"/><path d="M50 44.2V48l2.6 1.8" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="bname">A Better Life Tracker<small>Weekly Schedule &amp; Balance</small><small class="by">by SeanwithanAI</small></span>
-      <span class="ver" id="appVer">2026-11-21</span></div>
+      <span class="ver" id="appVer">2026-11-21 mk1</span></div>
     <div class="headright">
       <span class="syncwrap"><span class="sync" id="sync" role="status">Loading…</span>
       <button type="button" class="nudge" id="nudge" hidden></button></span>
@@ -333,7 +333,7 @@ async function downloadBundle(o){
 }
 
 /* ================================================================ app */
-const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-21', APP_BY = 'SeanwithanAI';   // bump the version with every update
+const APP_NAME = 'A Better Life Tracker', APP_VERSION = '2026-11-21 mk1', APP_BY = 'SeanwithanAI';   // bump the version with every update
 const FILE_BASE = APP_NAME.replace(/ /g, '-');   // A-Better-Life-Tracker
 const KEY = 'lifetracker-v1', THEME_KEY = 'lifetracker-theme';
 const DAY = 864e5, BK_DAYS = 7;
@@ -557,17 +557,23 @@ function planChange(c, mode){
     if(!bl.length) return;
     const dayStart = Math.min(...bl.map(b => toMin(b.start))), dayEnd = Math.max(...bl.map(b => toMin(b.start) + dur(b)));
     const floor = ymd(d) === todayStr() ? Math.ceil(nowMin() / 5) * 5 : 0;
-    const ok = b => !catById(b.cat).must && !b.locked && !b.kind && !catById(b.cat).keep && b.cat !== c.cat && !(b.isChange && b.src !== 'makeup');
+    const ok = b => !catById(b.cat).must && !b.locked && !b.kind && !catById(b.cat).keep && !(b.isChange && b.src !== 'makeup');
     // open time: gaps between blocks, plus flexible blocks, joined where they touch
     const busy = bl.filter(b => !ok(b)).map(b => [toMin(b.start), toMin(b.start) + dur(b)]).sort((a, b) => a[0] - b[0]);
     const open = []; let t = Math.max(dayStart, floor);
     busy.forEach(([s0, e0]) => { if(s0 > t) open.push([t, s0]); t = Math.max(t, e0); });
     if(dayEnd > t) open.push([t, dayEnd]);
     let best = null;
-    open.forEach(([a, b]) => { if(b - a < L) return; const st = Math.min(Math.max(v.s, a), b - L), dist = Math.abs(st - v.s);
+    // every start time that fits, in 15-minute steps, plus the closest one to where it was
+    const starts = []; open.forEach(([a, b]) => { if(b - a < L) return; starts.push(Math.min(Math.max(v.s, a), b - L));
+      for(let s = Math.ceil(a / 15) * 15; s + L <= b; s += 15) starts.push(s); });
+    starts.forEach(st => { const dist = Math.abs(st - v.s);
       // prefer borrowing from the category picked to balance the week
       const usesPref = keepPref && bl.some(x => x.cat === keepPref && toMin(x.start) < st + L && st < toMin(x.start) + dur(x));
-      const score = dist - (usesPref ? 1 : 0);
+      // and avoid borrowing from a goal that would then fall short this week (free time that's over its goal is fine)
+      const hurts = bl.some(x => { if(!ok(x)) return false; const o = Math.min(st + L, toMin(x.start) + dur(x)) - Math.max(st, toMin(x.start)), X = catById(x.cat);
+        return o > 0 && X.target > 0 && after(x.cat) - o < X.target * 60; });
+      const score = dist - (usesPref ? 1 : 0) + (hurts ? 240 : 0);
       if(!best || score < best.score) best = {st, score}; });
     if(best){
       const st = best.st, en = st + L, from = [...new Set(bl.filter(b => ok(b) && toMin(b.start) < en && st < toMin(b.start) + dur(b)).map(b => b.cat))];
